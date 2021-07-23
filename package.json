@@ -2,9 +2,13 @@
   "name": "fiibot-common",
   "version": "0.0.1",
   "description": "Lib shared between FII bots",
-  "main": "dist/index.js",
+  "main": "dist/lib.js",
   "repository": "https://github.com/federation-interservices-d-informatique/fiibot-common",
   "author": "FII Dev team and contributors",
   "license": "MIT",
-  "private": false
+  "private": false,
+  "devDependencies": {
+    "@types/node": "^16.4.1",
+    "typescript": "^4.3.5"
+  }
 }

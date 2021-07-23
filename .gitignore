@@ -1,3 +1,5 @@
+# Built code
+dist/
 # Dependencies
 node_modules/
 
