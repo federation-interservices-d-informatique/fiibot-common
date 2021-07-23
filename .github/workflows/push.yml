@@ -1,4 +1,5 @@
 ---
+name: Build, test and lint
 on:
   push: 
     branches: [ "main", "dev" ]
