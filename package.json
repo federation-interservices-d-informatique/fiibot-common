@@ -9,7 +9,9 @@
   "private": false,
   "scripts": {
     "build": "tsc",
-    "test": "echo Not yet implemented"
+    "test": "echo Not yet implemented",
+    "lint": "eslint .",
+    "lint-fix": "eslint . --fix"
   },
   "devDependencies": {
     "@types/node": "^16.4.1",
