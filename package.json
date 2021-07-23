@@ -7,6 +7,10 @@
   "author": "FII Dev team and contributors",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "build": "tsc",
+    "test": "echo Not yet implemented"
+  },
   "devDependencies": {
     "@types/node": "^16.4.1",
     "typescript": "^4.3.5"
