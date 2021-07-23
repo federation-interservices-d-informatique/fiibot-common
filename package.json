@@ -1,0 +1,10 @@
+{
+  "name": "fiibot-common",
+  "version": "0.0.1",
+  "description": "Lib shared between FII bots",
+  "main": "dist/index.js",
+  "repository": "https://github.com/federation-interservices-d-informatique/fiibot-common",
+  "author": "FII Dev team and contributors",
+  "license": "MIT",
+  "private": false
+}
