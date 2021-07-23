@@ -5,6 +5,7 @@ module.exports = {
     },
     "extends": [
         "eslint:recommended",
+        "prettier",
         "plugin:@typescript-eslint/recommended"
     ],
     "parser": "@typescript-eslint/parser",
@@ -13,7 +14,8 @@ module.exports = {
         "sourceType": "module"
     },
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "prettier"
     ],
     "rules": {
         "indent": [
@@ -31,6 +33,7 @@ module.exports = {
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "prettier/prettier": 1
     }
 };
