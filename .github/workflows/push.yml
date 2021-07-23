@@ -1,0 +1,47 @@
+---
+on:
+  push: 
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: [ "main" ]
+  
+jobs:
+  unittest:
+    # Run unit tests with jest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Install dependencies
+        run: yarn install
+      - name: Test
+        run: yarn test
+  lint:
+    # Excute eslint & prettier
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Install dependencies
+        run: yarn install
+      - name: Lint
+        run: yarn lint
+  compile:
+    # Compile with TSC
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Install dependencies
+        run: yarn install
+      - name: Build
+        run: yarn build
