@@ -44,3 +44,5 @@ n'oubliez pas de vous assurer que toutes les erreurs sont corrigées avant de pr
 ## Ajout de fonctionnalités / modifieations du code ajoutant des fonctions
 
 Si vous souhaitez ajouter une fonctionnalité / des fonctions dans le code, nous vons demandons de documenter un minimum celles-ci en utilisant JSDoc.
+
+Merci à tout les contributeurs, peut importe la taille de la contribution.
