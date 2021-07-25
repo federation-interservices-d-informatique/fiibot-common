@@ -12,7 +12,8 @@
     "test": "jest --passWithNoTests",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
-    "format": "prettier 'src/**/*.ts' --write"
+    "format": "prettier 'src/**/*.ts' --write",
+    "gendocs": "typedoc src/"
   },
   "devDependencies": {
     "@types/jest": "^26.0.24",
