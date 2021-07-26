@@ -1,0 +1,24 @@
+{
+  "name": "fiibot-test",
+  "version": "1.0.0",
+  "description": "FII bot test client",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"hello\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/federation-interservices-d-informatique"
+  },
+  "keywords": [
+    "test",
+    "client"
+  ],
+  "author": "FII Dev team & contributors",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^16.4.3",
+    "typescript": "^4.3.5"
+  }
+}

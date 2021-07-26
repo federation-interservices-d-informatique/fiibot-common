@@ -1,16 +1,15 @@
 {
     "include": [
-        "src/**/*.ts"
+        "src/**/*.ts",
+        "../src/**/*.ts"
     ],
     "exclude": [
-        "node_modules/*",
-        "dist/"
+        "node_modules/",
+        "dist"
     ],
     "compilerOptions": {
         "allowJs": false,
         "target": "esnext",
-        "skipLibCheck": true,
-        "declaration": true,
         "outDir": "dist",
         "moduleResolution": "node",
         "module": "ES6",
