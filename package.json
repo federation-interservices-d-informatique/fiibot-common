@@ -12,8 +12,8 @@
   "scripts": {
     "build": "tsc",
     "test": "jest --passWithNoTests",
-    "lint": "eslint .",
-    "lint-fix": "eslint . --fix",
+    "lint": "eslint . -c .eslintrc.cjs",
+    "lint-fix": "eslint . -c .eslintrc.cjs --fix",
     "format": "prettier 'src/**/*.ts' --write",
     "gendocs": "typedoc src/",
     "prepublish": "tsc"

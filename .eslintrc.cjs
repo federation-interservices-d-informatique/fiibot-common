@@ -1,4 +1,4 @@
-module.exports = {
+module.exports =  {
     "env": {
         "es2021": true,
         "node": true
@@ -36,4 +36,4 @@ module.exports = {
         ],
         "prettier/prettier": 1
     }
-};
+}

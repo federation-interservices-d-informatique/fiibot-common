@@ -1,3 +1,6 @@
 node_modules
 dist
 jest.config.js
+test/node_modules
+test/dist
+docs/
