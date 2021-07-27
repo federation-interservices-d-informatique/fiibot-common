@@ -15,6 +15,13 @@ export class fiiClient extends Client {
     constructor(djsopts: ClientOptions, opts: fiiClientOptions) {
         super(djsopts);
         this.logger = new fiiLogger();
-        this.on("ready", (): void => {});
+        this.on("ready", (): void => {
+            this.logger
+                .ok(
+                    `Connected as ${this.user.username}#${this.user.discriminator} (${this.user.id})`,
+                    "BOT"
+                )
+                .ok(`Present in ${this.guilds.cache.size} guilds`, "BOT");
+        });
     }
 }
