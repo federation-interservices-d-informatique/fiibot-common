@@ -31,7 +31,7 @@ export class fiiLogger {
      * @param {string} msg - Message to log. Ex: Eating potatoes
      * @param {source} source - The source of the log. Ex: WOOMY
      */
-    public info = (msg: string, source?: string): void => {
+    public info = (msg: string, source?: string): fiiLogger => {
         const date = new Date();
         let sourceline = " ";
         if (source) {
@@ -43,13 +43,14 @@ export class fiiLogger {
                 AnsiEscapesColors.CYAN
             )
         );
+        return this;
     };
     /**
      * Write an error, in red
      * @param {string} msg - Message to log
      * @param {string} source - The source of the log. Ex: WOOMY
      */
-    public error = (msg: string, source?: string): void => {
+    public error = (msg: string, source?: string): fiiLogger => {
         const date = new Date();
         let sourceline = " ";
         if (source) {
@@ -61,13 +62,14 @@ export class fiiLogger {
                 AnsiEscapesColors.RED
             )
         );
+        return this;
     };
     /**
      * Write a warn, in Yellow
      * @param {string} msg - Message to log
      * @param {string} source - The source of the log. Ex: WOOMY
      */
-    public warn = (msg: string, source?: string): void => {
+    public warn = (msg: string, source?: string): fiiLogger => {
         const date = new Date();
         let sourceline = " ";
         if (source) {
@@ -80,13 +82,14 @@ export class fiiLogger {
                 AnsiEscapesColors.YELLOW
             )
         );
+        return this;
     };
     /**
      * Write an "ok", in green
      * @param {string} msg - Message to log
      * @param {string} source - The source of the log. Ex: WOOMY
      */
-    public ok = (msg: string, source?: string): void => {
+    public ok = (msg: string, source?: string): fiiLogger => {
         const date = new Date();
         let sourceline = " ";
         if (source) {
@@ -98,5 +101,6 @@ export class fiiLogger {
                 AnsiEscapesColors.GREEN
             )
         );
+        return this;
     };
 }

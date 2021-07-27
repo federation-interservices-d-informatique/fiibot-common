@@ -7,8 +7,4 @@ const client = new fiiClient(
     }
 );
 
-client.logger.error("msg", "i");
-client.logger.info("msg", "a");
-client.logger.ok("msg", "o");
-client.logger.warn("msg", "m");
 client.login(process.env.BOT_TOKEN);

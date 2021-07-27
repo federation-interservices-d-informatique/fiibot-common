@@ -15,5 +15,6 @@ export class fiiClient extends Client {
     constructor(djsopts: ClientOptions, opts: fiiClientOptions) {
         super(djsopts);
         this.logger = new fiiLogger();
+        this.on("ready", (): void => {});
     }
 }
