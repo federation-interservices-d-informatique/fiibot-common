@@ -44,12 +44,9 @@ export class fiiLogger {
         if (source) {
             sourceline = `(${source.toUpperCase()}) `;
         }
-        console.log(
-            this.colorise(
-                `[${date.toDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}] [INFO] ${sourceline}${msg}`,
-                AnsiEscapesColors.CYAN
-            )
-        );
+        const log = `[${date.toDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}] [INFO] ${sourceline}${msg}`;
+        this.whworker.postMessage(log);
+        console.log(this.colorise(log, AnsiEscapesColors.CYAN));
         return this;
     };
     /**
@@ -63,12 +60,9 @@ export class fiiLogger {
         if (source) {
             sourceline = `(${source.toUpperCase()}) `;
         }
-        console.error(
-            this.colorise(
-                `[${date.toDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}] [ERROR] ${sourceline}${msg}`,
-                AnsiEscapesColors.RED
-            )
-        );
+        const log = `[${date.toDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}] [ERROR] ${sourceline}${msg}`;
+        this.whworker.postMessage(log);
+        console.error(this.colorise(log, AnsiEscapesColors.RED));
         return this;
     };
     /**
@@ -83,12 +77,9 @@ export class fiiLogger {
             sourceline = `(${source.toUpperCase()}) `;
         }
         // This is not an error but this should appear on stderr
-        console.error(
-            this.colorise(
-                `[${date.toDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}] [WARN] ${sourceline}${msg}`,
-                AnsiEscapesColors.YELLOW
-            )
-        );
+        const log = `[${date.toDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}] [WARN] ${sourceline}${msg}`;
+        this.whworker.postMessage(log);
+        console.error(this.colorise(log, AnsiEscapesColors.YELLOW));
         return this;
     };
     /**
