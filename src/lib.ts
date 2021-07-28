@@ -1,3 +1,4 @@
+import { PermissionResolvable } from "discord.js";
 export * from "./classes/client.js";
 /**
  * fii Client options
@@ -7,4 +8,31 @@ export interface fiiClientOptions {
      * Prefix of the client
      */
     prefix: string;
+}
+/**
+ * Command options
+ */
+export interface commandOptions {
+    /** The name of the command */
+    name: string;
+    /** The description of the command */
+    description: string;
+    /** The aliases of the command */
+    aliases?: Array<string>;
+    /** Set to true if the command can only be run in a guild */
+    guildOnly?: boolean;
+    /** Set to true if the command can be run by an owner  */
+    ownerOnly?: boolean;
+    /** List of permissions required by **the client** to run the command */
+    clientPermissions?: Array<PermissionResolvable>;
+    /** List of permissions required by **the user (executor)** to run the command */
+    userPermissions?: Array<PermissionResolvable>;
+    /** Set to true to hide the command in help */
+    hidden?: boolean;
+    /** Set to true to disable reloading for this command */
+    protected?: boolean;
+    /** Usage example for the command */
+    usage?: string;
+    /** Link to command docs */
+    doclink?: string;
 }
