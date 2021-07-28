@@ -46,7 +46,6 @@ export class fiiLogger {
      * @param {source} source - The source of the log. Ex: WOOMY
      */
     public info = (msg: string, source?: string): fiiLogger => {
-        const date = new Date();
         let sourceline = " ";
         if (source) {
             sourceline = `(${source.toUpperCase()}) `;
@@ -63,7 +62,6 @@ export class fiiLogger {
      * @param {string} source - The source of the log. Ex: WOOMY
      */
     public error = (msg: string, source?: string): fiiLogger => {
-        const date = new Date();
         let sourceline = " ";
         if (source) {
             sourceline = `(${source.toUpperCase()}) `;
@@ -79,7 +77,6 @@ export class fiiLogger {
      * @param {string} source - The source of the log. Ex: WOOMY
      */
     public warn = (msg: string, source?: string): fiiLogger => {
-        const date = new Date();
         let sourceline = " ";
         if (source) {
             sourceline = `(${source.toUpperCase()}) `;
@@ -96,7 +93,6 @@ export class fiiLogger {
      * @param {string} source - The source of the log. Ex: WOOMY
      */
     public ok = (msg: string, source?: string): fiiLogger => {
-        const date = new Date();
         let sourceline = " ";
         if (source) {
             sourceline = `(${source.toUpperCase()}) `;
