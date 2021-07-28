@@ -9,6 +9,8 @@
   "private": false,
   "type": "module",
   "types": "dist/index.d.ts",
+  "module": "esnext",
+
   "scripts": {
     "build": "tsc",
     "test": "jest --passWithNoTests",
