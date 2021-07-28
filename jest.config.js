@@ -6,7 +6,9 @@ export default {
     "ts-jest": {
       "tsconfig": "tsconfig.json",
       "useESM": true,
-
     }
-  }
+  },
+  testPathIgnorePatterns: ["dist/"],
+  transform: {},
+  extensionsToTreatAsEsm: [".ts"]
 };
