@@ -1,18 +1,7 @@
 import { Worker } from "worker_threads";
 import { getDirname } from "../utils/dirname.js";
-/**
- * List of ANSI escapes codes for colors
- */
-export enum AnsiEscapesColors {
-    BLACK = 90,
-    RED = 91,
-    GREEN = 92,
-    YELLOW = 93,
-    BLUE = 94,
-    MAGENTA = 95,
-    CYAN = 96,
-    WHITE = 97
-}
+import { colorise, AnsiEscapesColors } from "../utils/colorise.js";
+
 /**
  * Cool logger with colors for FIIClient and commands
  */
@@ -29,17 +18,7 @@ export class fiiLogger {
         const date = new Date();
         return `[${date.toDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}]`;
     };
-    /**
-     * Prints a text in color
-     * @param text {string} - The text to print
-     * @param color {number} - The ANSI escape code
-     */
-    public colorise = (
-        text: string,
-        color: number = AnsiEscapesColors.WHITE
-    ): string => {
-        return `\x1b[${color}m${text}\x1b[m`;
-    };
+
     /**
      * Write an info, in blue
      * @param {string} msg - Message to log. Ex: Eating potatoes
@@ -53,7 +32,7 @@ export class fiiLogger {
         const log = `${this.formatDate()} [INFO] ${sourceline}${msg}`;
 
         this.whworker.postMessage(`\`\`\`markdown\n# ${log}\`\`\``);
-        console.log(this.colorise(log, AnsiEscapesColors.CYAN));
+        console.log(colorise(log, AnsiEscapesColors.CYAN));
         return this;
     };
     /**
@@ -68,7 +47,7 @@ export class fiiLogger {
         }
         const log = `${this.formatDate()} [ERROR] ${sourceline}${msg}`;
         this.whworker.postMessage(`\`\`\`diff\n- ${log}\`\`\``);
-        console.error(this.colorise(log, AnsiEscapesColors.RED));
+        console.error(colorise(log, AnsiEscapesColors.RED));
         return this;
     };
     /**
@@ -84,7 +63,7 @@ export class fiiLogger {
         // This is not an error but this should appear on stderr
         const log = `${this.formatDate()} [WARN] ${sourceline}${msg}`;
         this.whworker.postMessage(`\`\`\`fix\n${log}\`\`\``);
-        console.error(this.colorise(log, AnsiEscapesColors.YELLOW));
+        console.error(colorise(log, AnsiEscapesColors.YELLOW));
         return this;
     };
     /**
@@ -99,7 +78,7 @@ export class fiiLogger {
         }
         const log = `${this.formatDate()} [OK] ${sourceline}${msg}`;
         this.whworker.postMessage(`\`\`\`diff\n+ ${log}\`\`\``);
-        console.log(this.colorise(log, AnsiEscapesColors.GREEN));
+        console.log(colorise(log, AnsiEscapesColors.GREEN));
         return this;
     };
 }
