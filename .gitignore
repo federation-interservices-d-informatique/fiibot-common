@@ -11,3 +11,6 @@ test/node_modules
 
 # Docs
 docs/
+
+# Env configuration secrets
+test/.env

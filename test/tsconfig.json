@@ -12,7 +12,7 @@
         "target": "esnext",
         "outDir": "dist",
         "moduleResolution": "node",
-        "module": "ES6",
+        "module": "esnext",
         "esModuleInterop": true
     }
 }

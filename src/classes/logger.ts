@@ -1,3 +1,5 @@
+import { Worker } from "worker_threads";
+import { getDirname } from "../utils/dirname.js";
 /**
  * List of ANSI escapes codes for colors
  */
@@ -15,6 +17,11 @@ export enum AnsiEscapesColors {
  * Cool logger with colors for FIIClient and commands
  */
 export class fiiLogger {
+    whworker: Worker;
+    constructor() {
+        this.whworker = new Worker(`${getDirname()}/../helpers/logworker.js`);
+    }
+
     /**
      * Prints a text in color
      * @param text {string} - The text to print
@@ -95,12 +102,9 @@ export class fiiLogger {
         if (source) {
             sourceline = `(${source.toUpperCase()}) `;
         }
-        console.log(
-            this.colorise(
-                `[${date.toDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}] [OK] ${sourceline}${msg}`,
-                AnsiEscapesColors.GREEN
-            )
-        );
+        const log = `[${date.toDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}] [OK] ${sourceline}${msg}`;
+        this.whworker.postMessage(log);
+        console.log(this.colorise(log, AnsiEscapesColors.GREEN));
         return this;
     };
 }
