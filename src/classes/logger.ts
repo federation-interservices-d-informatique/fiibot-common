@@ -21,7 +21,14 @@ export class fiiLogger {
     constructor() {
         this.whworker = new Worker(`${getDirname()}/../helpers/logworker.js`);
     }
-
+    /**
+     * Formats a date for logging
+     * @returns {string} - The formatted date
+     */
+    public formatDate = (): string => {
+        const date = new Date();
+        return `[${date.toDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}]`;
+    };
     /**
      * Prints a text in color
      * @param text {string} - The text to print
@@ -44,7 +51,8 @@ export class fiiLogger {
         if (source) {
             sourceline = `(${source.toUpperCase()}) `;
         }
-        const log = `[${date.toDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}] [INFO] ${sourceline}${msg}`;
+        const log = `${this.formatDate()} [INFO] ${sourceline}${msg}`;
+
         this.whworker.postMessage(`\`\`\`markdown\n# ${log}\`\`\``);
         console.log(this.colorise(log, AnsiEscapesColors.CYAN));
         return this;
@@ -60,7 +68,7 @@ export class fiiLogger {
         if (source) {
             sourceline = `(${source.toUpperCase()}) `;
         }
-        const log = `[${date.toDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}] [ERROR] ${sourceline}${msg}`;
+        const log = `${this.formatDate()} [ERROR] ${sourceline}${msg}`;
         this.whworker.postMessage(`\`\`\`diff\n- ${log}\`\`\``);
         console.error(this.colorise(log, AnsiEscapesColors.RED));
         return this;
@@ -77,7 +85,7 @@ export class fiiLogger {
             sourceline = `(${source.toUpperCase()}) `;
         }
         // This is not an error but this should appear on stderr
-        const log = `[${date.toDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}] [WARN] ${sourceline}${msg}`;
+        const log = `${this.formatDate()} [WARN] ${sourceline}${msg}`;
         this.whworker.postMessage(`\`\`\`fix\n${log}\`\`\``);
         console.error(this.colorise(log, AnsiEscapesColors.YELLOW));
         return this;
@@ -93,7 +101,7 @@ export class fiiLogger {
         if (source) {
             sourceline = `(${source.toUpperCase()}) `;
         }
-        const log = `[${date.toDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}] [OK] ${sourceline}${msg}`;
+        const log = `${this.formatDate()} [OK] ${sourceline}${msg}`;
         this.whworker.postMessage(`\`\`\`diff\n+ ${log}\`\`\``);
         console.log(this.colorise(log, AnsiEscapesColors.GREEN));
         return this;
