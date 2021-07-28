@@ -45,7 +45,7 @@ export class fiiLogger {
             sourceline = `(${source.toUpperCase()}) `;
         }
         const log = `[${date.toDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}] [INFO] ${sourceline}${msg}`;
-        this.whworker.postMessage(log);
+        this.whworker.postMessage(`\`\`\`markdown\n# ${log}\`\`\``);
         console.log(this.colorise(log, AnsiEscapesColors.CYAN));
         return this;
     };
@@ -61,7 +61,7 @@ export class fiiLogger {
             sourceline = `(${source.toUpperCase()}) `;
         }
         const log = `[${date.toDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}] [ERROR] ${sourceline}${msg}`;
-        this.whworker.postMessage(log);
+        this.whworker.postMessage(`\`\`\`diff\n- ${log}\`\`\``);
         console.error(this.colorise(log, AnsiEscapesColors.RED));
         return this;
     };
@@ -78,7 +78,7 @@ export class fiiLogger {
         }
         // This is not an error but this should appear on stderr
         const log = `[${date.toDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}] [WARN] ${sourceline}${msg}`;
-        this.whworker.postMessage(log);
+        this.whworker.postMessage(`\`\`\`fix\n${log}\`\`\``);
         console.error(this.colorise(log, AnsiEscapesColors.YELLOW));
         return this;
     };
@@ -94,7 +94,7 @@ export class fiiLogger {
             sourceline = `(${source.toUpperCase()}) `;
         }
         const log = `[${date.toDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}] [OK] ${sourceline}${msg}`;
-        this.whworker.postMessage(log);
+        this.whworker.postMessage(`\`\`\`diff\n+ ${log}\`\`\``);
         console.log(this.colorise(log, AnsiEscapesColors.GREEN));
         return this;
     };
