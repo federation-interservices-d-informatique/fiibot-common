@@ -32,7 +32,7 @@ export class fiiClient extends Client {
                 )
                 .ok(`Present in ${this.guilds.cache.size} guilds`, "BOT");
         });
-        this.on("message", async (msg) => {
+        this.on("messageCreate", async (msg) => {
             if (msg.partial) await msg.fetch();
             if (msg.author.bot) return; //Stop if the author is a bot or a WebHook
             if (msg.content.indexOf(this.fiiSettings.prefix) !== 0) return;

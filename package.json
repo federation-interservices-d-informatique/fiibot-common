@@ -10,7 +10,6 @@
   "type": "module",
   "types": "dist/index.d.ts",
   "module": "esnext",
-
   "scripts": {
     "build": "tsc",
     "test": "node --experimental-vm-modules node_modules/.bin/jest --passWithNoTests",
@@ -35,6 +34,6 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "discord.js": "^12.5.3"
+    "discord.js": "^13.0.0-dev.4f1f32f.1627517033"
   }
 }
