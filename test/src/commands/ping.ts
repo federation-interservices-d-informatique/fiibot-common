@@ -10,7 +10,7 @@ export default class PingCommand extends Command {
             aliases: ["pong"]
         });
     }
-    async run(message: Message) {
+    async run(message: Message): Promise<void> {
         message.reply("Hello");
     }
 }
