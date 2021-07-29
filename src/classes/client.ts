@@ -1,5 +1,5 @@
-import { Client, ClientOptions, Message } from "discord.js";
-import { CommandManagerSettings, fiiClientOptions } from "../lib.js";
+import { Client, ClientOptions } from "discord.js";
+import { fiiClientOptions } from "../lib.js";
 import { Command } from "./command.js";
 import { CommandManager } from "./CommandManager.js";
 import { fiiLogger } from "./logger.js";

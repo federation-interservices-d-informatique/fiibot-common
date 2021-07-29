@@ -26,7 +26,7 @@ export class CommandManager {
         this.settings = settings;
         this.init();
     }
-    public init = () => {
+    public init = (): void => {
         const commandFiles = [];
         this.settings.commandsPath.forEach((path) => {
             if (!existsSync(path)) {
@@ -44,7 +44,7 @@ export class CommandManager {
             await this.loadCommand(file);
         });
     };
-    loadCommand = async (file: string) => {
+    loadCommand = async (file: string): Promise<void> => {
         const imported = (await import(file)).default;
         const cmd: Command = new imported();
         this.client.logger.info(`Loading command ${cmd.infos.name}`, "LOADER");
