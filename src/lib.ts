@@ -8,6 +8,10 @@ export interface fiiClientOptions {
      * Prefix of the client
      */
     prefix: string;
+    /**
+     * Settings to pass to CommandManager
+     */
+    commandManagerSettings: CommandManagerSettings;
 }
 /**
  * Command options
@@ -35,4 +39,12 @@ export interface commandOptions {
     usage?: string;
     /** Link to command docs */
     doclink?: string;
+}
+
+/**
+ * CommandManager settings
+ */
+export interface CommandManagerSettings {
+    /** Commands paths */
+    commandsPath: Array<string>;
 }
