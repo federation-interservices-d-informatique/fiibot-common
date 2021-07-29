@@ -1,4 +1,4 @@
-import { Client, ClientOptions } from "discord.js";
+import { Client, ClientOptions, Message } from "discord.js";
 import { fiiClientOptions } from "../lib.js";
 import { fiiLogger } from "./logger.js";
 

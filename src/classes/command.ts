@@ -1,3 +1,4 @@
+import { Message } from "discord.js";
 import { commandOptions } from "../lib";
 import { fiiClient } from "./client";
 
@@ -24,5 +25,8 @@ export class Command {
         this.client = client;
         this.infos = options;
         this.data = data || new Map<string, any>();
+    }
+    async run(message: Message, args: string[]): Promise<void> {
+        message.channel.send("NYI!");
     }
 }
