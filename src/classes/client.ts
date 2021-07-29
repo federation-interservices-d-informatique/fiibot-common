@@ -31,6 +31,16 @@ export class fiiClient extends Client {
                     "BOT"
                 )
                 .ok(`Present in ${this.guilds.cache.size} guilds`, "BOT");
+            this.channels.cache.forEach(async (chan) => {
+                if (chan.isThread() && !chan.archived) {
+                    this.logger.info(`Joined thread ${chan.name}`, "CLIENT");
+                    await chan.join();
+                }
+            });
+        });
+        this.on("threadCreate", async (tc) => {
+            this.logger.info(`Joined thread ${tc.name}`, "CLIENT");
+            await tc.join();
         });
         this.on("messageCreate", async (msg) => {
             if (msg.partial) await msg.fetch();
