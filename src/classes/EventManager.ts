@@ -38,6 +38,7 @@ export class EventManager {
      * @param {string} name Name of the event handler
      */
     deleteEvent(name: string): void {
+        this.client.logger.warn(`Deleting event ${name}`, "EVENTMANAGER");
         const type = this.types.get(name);
         this.callbacks.delete(name);
         this.types.delete(name);
