@@ -22,6 +22,12 @@ npm test # Exécution des tests
 
 Afin que le code soit lisible par tous et pousser certains test, `prettier` et `eslint` seront également utilisés. Ces tests seront également exécutés par GitHub Actions.
 
+#### Règles pour les commits
+
+Nous nous demandons de suivre le format suivant pour vos commits: `Sujet: Description`. Si votre message vous semble trop "flou", vous pouvez rajouter une description pour le clarifier. **Toute modification ne respectant pas ce format se verra rejetée et nous vous demanderons de modifier le noms de vos commits.**
+
+> Note: La raison pricinpale de ces restrictions sont dues au fait que le journal de modifications est généré automatiquement à chaque version en fonction du format `sujet: description`
+
 #### Marche à suivre
 
 ```bash
