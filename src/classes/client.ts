@@ -1,5 +1,7 @@
 import { Client, ClientOptions, Message } from "discord.js";
-import { fiiClientOptions } from "../lib.js";
+import { CommandManagerSettings, fiiClientOptions } from "../lib.js";
+import { Command } from "./command.js";
+import { CommandManager } from "./CommandManager.js";
 import { fiiLogger } from "./logger.js";
 
 /**
@@ -12,9 +14,16 @@ export class fiiClient extends Client {
      * @param {fiiClientOptions} opts - Fii client options
      */
     logger: fiiLogger;
+    commandManager: CommandManager;
+    fiiSettings: fiiClientOptions;
     constructor(djsopts: ClientOptions, opts: fiiClientOptions) {
         super(djsopts);
         this.logger = new fiiLogger();
+        this.commandManager = new CommandManager(
+            this,
+            opts.commandManagerSettings
+        );
+        this.fiiSettings = opts;
         this.on("ready", (): void => {
             this.logger
                 .ok(
@@ -22,6 +31,32 @@ export class fiiClient extends Client {
                     "BOT"
                 )
                 .ok(`Present in ${this.guilds.cache.size} guilds`, "BOT");
+        });
+        this.on("message", async (msg) => {
+            if (msg.partial) await msg.fetch();
+            if (msg.author.bot) return; //Stop if the author is a bot or a WebHook
+            if (msg.content.indexOf(this.fiiSettings.prefix) !== 0) return;
+            const args = msg.content
+                .slice(this.fiiSettings.prefix.length)
+                .trim()
+                .split(/ +/g);
+            const command = args.shift().toLowerCase();
+            if (
+                !this.commandManager.aliases.has(command) &&
+                !this.commandManager.commands.has(command)
+            )
+                return;
+            let cmd: Command;
+            if (this.commandManager.aliases.has(command)) {
+                cmd = this.commandManager.aliases.get(command);
+            } else {
+                cmd = this.commandManager.commands.get(command);
+            }
+            try {
+                cmd.run(msg, args);
+            } catch (e) {
+                console.log(e);
+            }
         });
     }
 }
