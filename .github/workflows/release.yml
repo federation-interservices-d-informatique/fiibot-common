@@ -16,9 +16,9 @@ jobs:
         with:
           node-version: '16'
       - name: Install dependencies
-        run: yarn install
+        run: npm install
       - name: Test
-        run: yarn test
+        run: npm test
   lint:
     # Excute eslint & prettier
     runs-on: ubuntu-latest
@@ -29,9 +29,9 @@ jobs:
         with:
           node-version: '16'
       - name: Install dependencies
-        run: yarn install
+        run: npm install
       - name: Lint
-        run: yarn lint
+        run: npm run lint
   compile:
     # Compile with TSC
     runs-on: ubuntu-latest
@@ -42,9 +42,9 @@ jobs:
         with:
           node-version: '16'
       - name: Install dependencies
-        run: yarn install
+        run: npm install
       - name: Build
-        run: yarn build
+        run: npm run build
   doc:
     needs: ['compile', 'unittest', 'lint']
     runs-on: ubuntu-latest
@@ -55,7 +55,7 @@ jobs:
         with:
           node-version: '16'
       - name: Install dependencies
-        run: yarn install
+        run: npm install
       - name: Run docs
         run: npm run gendocs
       - name: Publish generated content to GitHub Pages
