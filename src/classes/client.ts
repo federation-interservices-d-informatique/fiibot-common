@@ -27,7 +27,7 @@ export class fiiClient extends Client {
         );
         this.fiiSettings = opts;
         this.eventManager = new EventManager(this);
-        this.on("ready", (): void => {
+        this.eventManager.registerEvent("loginfos", "ready", (): void => {
             this.logger
                 .ok(
                     `Connected as ${this.user.username}#${this.user.discriminator} (${this.user.id})`,
@@ -41,10 +41,14 @@ export class fiiClient extends Client {
                 }
             });
         });
-        this.on("threadCreate", async (tc) => {
-            this.logger.info(`Joined thread ${tc.name}`, "CLIENT");
-            await tc.join();
-        });
+        this.eventManager.registerEvent(
+            "joinnewthreads",
+            "threadCreate",
+            async (tc) => {
+                this.logger.info(`Joined thread ${tc.name}`, "CLIENT");
+                await tc.join();
+            }
+        );
         this.eventManager.registerEvent(
             "processcommand",
             "messageCreate",
