@@ -11,6 +11,6 @@ export default class PingCommand extends Command {
         });
     }
     async run(message: Message): Promise<void> {
-        message.reply("Hello");
+        message.reply("Heeeello");
     }
 }
