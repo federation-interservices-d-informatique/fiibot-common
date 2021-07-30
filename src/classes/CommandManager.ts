@@ -47,6 +47,7 @@ export class CommandManager {
     loadCommand = async (file: string): Promise<void> => {
         const imported = (await import(file)).default;
         const cmd: Command = new imported(this.client);
+        this.paths.set(cmd.infos.name, file);
         this.client.logger.info(`Loading command ${cmd.infos.name}`, "LOADER");
         this.commands.set(cmd.infos.name, cmd);
         if (cmd.infos.aliases) {
@@ -56,4 +57,15 @@ export class CommandManager {
         }
         this.paths.set(cmd.infos.name, file);
     };
+    unloadCommand(name: string): void {
+        let command: Command;
+        if (this.commands.has(name)) {
+            this.client.logger.warn(`Unloading command ${name}`, "HANDLER");
+            command = this.commands.get(name);
+            command.infos.aliases.forEach((alias) => {
+                this.aliases.delete(alias);
+            });
+            this.commands.delete(name);
+        }
+    }
 }
