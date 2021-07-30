@@ -46,7 +46,7 @@ export class CommandManager {
     };
     loadCommand = async (file: string): Promise<void> => {
         const imported = (await import(file)).default;
-        const cmd: Command = new imported();
+        const cmd: Command = new imported(this.client);
         this.client.logger.info(`Loading command ${cmd.infos.name}`, "LOADER");
         this.commands.set(cmd.infos.name, cmd);
         if (cmd.infos.aliases) {

@@ -19,16 +19,26 @@ export class EventManager {
         this.callbacks = new Map();
         this.types = new Map();
     }
+    /**
+     * Register a new event
+     * @param name The event name
+     * @param event Type of event
+     * @param cb The callback code
+     * @param log Set to false if the event must not be logged
+     */
     registerEvent = (
         name: string,
         event: keyof ClientEvents,
         // eslint-disable-next-line
-        cb: (...args: any[]) => void
+        cb: (...args: any[]) => void,
+        log = true
     ): void => {
-        this.client.logger.info(
-            `Registering event ${name} type ${event}`,
-            "EVENTMANAGER"
-        );
+        if (log) {
+            this.client.logger.info(
+                `Registering event ${name} type ${event}`,
+                "EVENTMANAGER"
+            );
+        }
         this.callbacks.set(name, cb);
         this.types.set(name, event);
         this.client.on(event, cb.bind(null));
@@ -36,9 +46,19 @@ export class EventManager {
     /**
      * Deletes an event handler
      * @param {string} name Name of the event handler
+     * @param log Disable if the event must not be logged
      */
-    deleteEvent(name: string): void {
-        this.client.logger.warn(`Deleting event ${name}`, "EVENTMANAGER");
+    deleteEvent(name: string, log = true): void {
+        if (!this.callbacks.has(name) || !this.types.has(name)) {
+            this.client.logger.error(
+                `Can't delete event ${name}: not found`,
+                "EVENTHANDLER"
+            );
+            return;
+        }
+        if (log) {
+            this.client.logger.warn(`Deleting event ${name}`, "EVENTMANAGER");
+        }
         const type = this.types.get(name);
         this.callbacks.delete(name);
         this.types.delete(name);
@@ -48,5 +68,24 @@ export class EventManager {
                 this.client.on(type, cb.bind(null));
             }
         });
+    }
+    /**
+     * Reload an event and modify its callback
+     * @param name The name of the event
+     * @param cb The new callback
+     */
+    // eslint-disable-next-line
+    setCallback(name: string, cb: (...args: any[]) => void): void {
+        if (!this.callbacks.has(name) || !this.types.has(name)) {
+            this.client.logger.error(
+                `Can't modify event ${name}: not found`,
+                "EVENTHANDLER"
+            );
+            return;
+        }
+        this.client.logger.info(`Reloading event ${name}`, "EVENTHANDLER");
+        const type = this.types.get(name);
+        this.deleteEvent(name, false);
+        this.registerEvent(name, type, cb, false);
     }
 }
