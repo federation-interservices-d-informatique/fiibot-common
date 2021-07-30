@@ -12,6 +12,10 @@ export interface fiiClientOptions {
      * Settings to pass to CommandManager
      */
     commandManagerSettings: CommandManagerSettings;
+    /**
+     * List of owners
+     */
+    owners: number[];
 }
 /**
  * Command options

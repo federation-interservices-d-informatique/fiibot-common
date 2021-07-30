@@ -1,4 +1,4 @@
-import { Client, ClientOptions } from "discord.js";
+import { Client, ClientOptions, UserResolvable } from "discord.js";
 import { fiiClientOptions } from "../lib.js";
 import { Command } from "./command.js";
 import { CommandManager } from "./CommandManager.js";
@@ -72,6 +72,8 @@ export class fiiClient extends Client {
                 } else {
                     cmd = this.commandManager.commands.get(command);
                 }
+                if (!cmd.hasBotPermission(msg) || !cmd.hasPermission(msg))
+                    return;
                 try {
                     cmd.run(msg, args);
                 } catch (e) {
@@ -79,5 +81,15 @@ export class fiiClient extends Client {
                 }
             }
         );
+    }
+    isOwner(user: UserResolvable): boolean {
+        if (this.fiiSettings.owners.length === 0) {
+            return false;
+        }
+        user = this.users.resolve(user);
+        if (!user) {
+            return false;
+        }
+        return this.fiiSettings.owners.includes(parseInt(user.id));
     }
 }
