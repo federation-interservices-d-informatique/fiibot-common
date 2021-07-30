@@ -1,7 +1,7 @@
 import { fiiClient } from "../../src/index.js";
 import { config as envconfig } from "dotenv";
 import { dirname } from "path";
-import { Intents, Message } from "discord.js";
+import { Intents } from "discord.js";
 envconfig();
 const client = new fiiClient(
     {
@@ -14,12 +14,5 @@ const client = new fiiClient(
         }
     }
 );
-const cb = (msg: Message) => {
-    if (msg.author.bot) return;
-    msg.channel.send(msg.content);
-    if (msg.content === "delete") {
-        client.eventManager.deleteEvent("logmessage");
-    }
-};
-client.eventManager.registerEvent("logmessage", "messageCreate", cb);
+
 client.login(process.env.BOT_TOKEN);
