@@ -6,7 +6,6 @@ on:
       - '*'
   
 jobs:
-  
   lint:
     # Excute eslint & prettier
     runs-on: ubuntu-latest
@@ -62,7 +61,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ needs.getversion.outputs.version }}
+          tag_name: ${{ steps.tag.outputs.tag}}
           release_name: Release ${{ steps.tag.outputs.tag }}
           body_path: 'changelog.txt'
           draft: false
