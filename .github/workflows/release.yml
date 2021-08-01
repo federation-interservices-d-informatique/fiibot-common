@@ -34,7 +34,7 @@ jobs:
       - name: Build
         run: npm run build
   doc:
-    needs: ['compile', 'unittest', 'lint']
+    needs: ['compile', 'lint']
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
