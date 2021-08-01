@@ -52,3 +52,5 @@ export interface CommandManagerSettings {
     /** Commands paths */
     commandsPath: Array<string>;
 }
+
+export const VERSION = "1.0.0";
