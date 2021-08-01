@@ -1,12 +1,12 @@
 {
-  "name": "fiibot-common",
+  "name": "@federation-interservices-d-informatique/fiibot-common",
   "version": "0.0.1",
   "description": "Lib shared between FII bots",
   "main": "dist/lib.js",
+  "typings": "dist/lib.d.ts",
   "repository": "https://github.com/federation-interservices-d-informatique/fiibot-common",
   "author": "FII Dev team and contributors",
   "license": "MIT",
-  "private": false,
   "type": "module",
   "types": "dist/index.d.ts",
   "module": "esnext",
@@ -17,7 +17,8 @@
     "lint-fix": "eslint . -c .eslintrc.cjs --fix",
     "format": "prettier 'src/**/*.ts' --write",
     "gendocs": "typedoc src/",
-    "prepublish": "tsc"
+    "prepublish": "tsc",
+    "prepublishOnly": "tsc"
   },
   "devDependencies": {
     "@types/jest": "^26.0.24",
