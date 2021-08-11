@@ -1,4 +1,4 @@
-import { Message } from "discord.js";
+import { CommandInteraction } from "discord.js";
 import { commandOptions } from "../lib";
 import { canSendEmbeds, canSendMessage } from "../utils/Permissions.js";
 import { fiiClient } from "./client";
@@ -28,40 +28,39 @@ export class Command {
         this.data = data || new Map();
     }
     // eslint-disable-next-line
-    async run(message: Message, args: string[]): Promise<void> {
-        message.channel.send("NYI!");
+    async run(inter: CommandInteraction): Promise<void> {
+        inter.reply("NYI!");
     }
-    hasPermission(message: Message): boolean {
-        if (!message.guild && !this.infos.ownerOnly) {
+    hasPermission(inter: CommandInteraction): boolean {
+        if (!inter.guild && !this.infos.ownerOnly) {
             return true;
         }
         if (!this.infos.ownerOnly && !this.infos.userPermissions) {
             return true;
         }
-        if (this.client.isOwner(message.author)) {
+        if (this.client.isOwner(inter.user)) {
             return true;
         }
-        if (this.infos.ownerOnly && !this.client.isOwner(message.author)) {
-            message.channel.send(
+        if (this.infos.ownerOnly && !this.client.isOwner(inter.user)) {
+            inter.reply(
                 `La commande \`${this.infos.name}\` ne peut être utilisée que par un owner du bot!`
             );
             return false;
         }
-        if (this.infos.guildOnly && !message.guild) return false;
-        if (message.channel.type != "DM") {
-            const missing = message.channel
-                .permissionsFor(message.author)
+        if (this.infos.guildOnly && !inter.guild) return false;
+        if (inter.channel.type != "DM") {
+            const missing = inter.channel
+                .permissionsFor(inter.user)
                 .missing(this.infos.userPermissions);
             if (missing.length > 0) {
-                message.reply({
+                inter.reply({
                     embeds: [
                         {
                             title: "Manque de permissions:",
-                            description: `La commande ${
-                                this.infos.name
-                            } requiert les permissions suivantes: ${this.infos.userPermissions.join(
-                                ","
-                            )}`,
+                            description: `La commande ${this.infos.name
+                                } requiert les permissions suivantes: ${this.infos.userPermissions.join(
+                                    ","
+                                )}`,
                             color: "RED"
                         }
                     ]
@@ -71,32 +70,30 @@ export class Command {
             return true;
         }
     }
-    hasBotPermission(message: Message): boolean {
-        if (!message.guild) return true;
-        if (!canSendMessage(message)) return false;
-        if (message.channel.type != "DM") {
-            const missing = message.channel
-                .permissionsFor(message.guild.me)
+    hasBotPermission(inter: CommandInteraction): boolean {
+        if (!inter.guild) return true;
+        if (!canSendMessage(inter.guild)) return false;
+        if (inter.channel.type != "DM") {
+            const missing = inter.channel
+                .permissionsFor(inter.guild.me)
                 .missing(this.infos.clientPermissions);
             if (missing.length > 0) {
-                if (canSendEmbeds(message)) {
-                    message.channel.send({
+                if (canSendEmbeds(inter.guild)) {
+                    inter.reply({
                         embeds: [
                             {
                                 title: "Manque de permissions:",
-                                description: `Je ne peux pas exécuter la commande \`${
-                                    this.infos.name
-                                }\` car elle requiert que j'aie les permissions suivantes: ${this.infos.clientPermissions.join(
-                                    ","
-                                )}`,
+                                description: `Je ne peux pas exécuter la commande \`${this.infos.name
+                                    }\` car elle requiert que j'aie les permissions suivantes: ${this.infos.clientPermissions.join(
+                                        ","
+                                    )}`,
                                 color: "RED"
                             }
                         ]
                     });
                 } else {
-                    message.channel.send(
-                        `Erreur: Je ne peux pas exécuter la commande \`${
-                            this.infos.name
+                    inter.reply(
+                        `Erreur: Je ne peux pas exécuter la commande \`${this.infos.name
                         }\` car elle requiert que j'aie les permissions suivantes: ${this.infos.clientPermissions.join(
                             ","
                         )}`
