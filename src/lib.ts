@@ -15,7 +15,7 @@ export interface fiiClientOptions {
     /**
      * Discord token
      */
-    token: string
+    token: string;
 }
 /**
  * Command options

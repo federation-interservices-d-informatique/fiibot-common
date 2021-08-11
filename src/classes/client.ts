@@ -1,6 +1,5 @@
 import { Client, ClientOptions, Interaction, UserResolvable } from "discord.js";
 import { fiiClientOptions } from "../lib.js";
-import { Command } from "./command.js";
 import { CommandManager } from "./CommandManager.js";
 import { EventManager } from "./EventManager.js";
 import { fiiLogger } from "./logger.js";
@@ -54,7 +53,7 @@ export class fiiClient extends Client {
                 if (!inter.isCommand()) return;
                 // NOTE: I am not sure if a bot can trigger an interaction
                 if (inter.user.bot) return; //Stop if the author is a bot or a WebHook
-                let cmd = this.commandManager.commands.get(inter.commandName);
+                const cmd = this.commandManager.commands.get(inter.commandName);
                 if (!cmd) return;
                 if (!cmd.hasBotPermission(inter) || !cmd.hasPermission(inter))
                     return;
@@ -65,13 +64,14 @@ export class fiiClient extends Client {
                 }
             }
         );
-        this.login(opts.token).then(_ => {
-            this.commandManager = new CommandManager(
-                this,
-                opts.commandManagerSettings
-            );
-        }).catch(e => console.log)
-
+        this.login(opts.token)
+            .then(() => {
+                this.commandManager = new CommandManager(
+                    this,
+                    opts.commandManagerSettings
+                );
+            })
+            .catch(console.log);
     }
     isOwner(user: UserResolvable): boolean {
         if (this.fiiSettings.owners.length === 0) {
