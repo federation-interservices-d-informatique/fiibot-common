@@ -12,7 +12,7 @@ const client = new fiiClient(
         commandManagerSettings: {
             commandsPath: [`${dirname(import.meta.url.substr(7))}/commands`]
         },
-        owners: [743851266635071710]
+        owners: [743851266635071710],
+        token: process.env.BOT_TOKEN
     }
 );
-client.login(process.env.BOT_TOKEN);
