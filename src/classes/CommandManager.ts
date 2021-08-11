@@ -34,6 +34,9 @@ export class CommandManager {
                 commandFiles.push(i);
             });
         });
+        // Flush commands list
+        this.client.application.commands.set([]);
+        this.client.guilds.cache.forEach(g => g.commands.set([]));
         commandFiles.forEach(async (file) => {
             await this.loadCommand(file);
         });
@@ -43,5 +46,6 @@ export class CommandManager {
         const cmd: Command = new imported(this.client);
         this.client.logger.info(`Loading command ${cmd.appCommand.name}`, "LOADER");
         this.commands.set(cmd.appCommand.name, cmd);
+        this.client.application.commands.create(cmd.appCommand);
     };
 }
