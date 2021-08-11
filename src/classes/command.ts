@@ -39,7 +39,10 @@ export class Command {
         if (!inter.guild && !this.extraOptions.ownerOnly) {
             return true;
         }
-        if (!this.extraOptions.ownerOnly && !this.extraOptions.userPermissions) {
+        if (
+            !this.extraOptions.ownerOnly &&
+            !this.extraOptions.userPermissions
+        ) {
             return true;
         }
         if (this.client.isOwner(inter.user)) {
@@ -61,10 +64,11 @@ export class Command {
                     embeds: [
                         {
                             title: "Manque de permissions:",
-                            description: `La commande ${this.appCommand.name
-                                } requiert les permissions suivantes: ${this.extraOptions.userPermissions.join(
-                                    ","
-                                )}`,
+                            description: `La commande ${
+                                this.appCommand.name
+                            } requiert les permissions suivantes: ${this.extraOptions.userPermissions.join(
+                                ","
+                            )}`,
                             color: "RED"
                         }
                     ]
@@ -86,17 +90,19 @@ export class Command {
                         embeds: [
                             {
                                 title: "Manque de permissions:",
-                                description: `Je ne peux pas exécuter la commande \`${this.appCommand.name
-                                    }\` car elle requiert que j'aie les permissions suivantes: ${this.extraOptions.clientPermissions.join(
-                                        ","
-                                    )}`,
+                                description: `Je ne peux pas exécuter la commande \`${
+                                    this.appCommand.name
+                                }\` car elle requiert que j'aie les permissions suivantes: ${this.extraOptions.clientPermissions.join(
+                                    ","
+                                )}`,
                                 color: "RED"
                             }
                         ]
                     });
                 } else {
                     inter.reply(
-                        `Erreur: Je ne peux pas exécuter la commande \`${this.appCommand.name
+                        `Erreur: Je ne peux pas exécuter la commande \`${
+                            this.appCommand.name
                         }\` car elle requiert que j'aie les permissions suivantes: ${this.extraOptions.clientPermissions.join(
                             ","
                         )}`
