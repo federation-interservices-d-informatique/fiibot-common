@@ -34,9 +34,9 @@ export class CommandManager {
                 commandFiles.push(i);
             });
         });
+
         // Flush commands list
         this.client.application.commands.set([]);
-        this.client.guilds.cache.forEach(g => g.commands.set([]));
         commandFiles.forEach(async (file) => {
             await this.loadCommand(file);
         });

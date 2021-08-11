@@ -16,6 +16,10 @@ export interface fiiClientOptions {
      * List of owners
      */
     owners: number[];
+    /**
+     * Discord token
+     */
+    token: string
 }
 /**
  * Command options
