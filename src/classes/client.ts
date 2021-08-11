@@ -75,7 +75,7 @@ export class fiiClient extends Client {
                 if (!cmd.hasBotPermission(msg) || !cmd.hasPermission(msg))
                     return;
                 try {
-                    cmd.run(msg, args);
+                    cmd.run(msg);
                 } catch (e) {
                     console.log(e);
                 }
