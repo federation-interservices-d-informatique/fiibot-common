@@ -8,7 +8,6 @@ const client = new fiiClient(
         intents: new Intents(["GUILD_MESSAGES", "GUILDS"])
     },
     {
-        prefix: "$",
         commandManagerSettings: {
             commandsPath: [`${dirname(import.meta.url.substr(7))}/commands`]
         },
