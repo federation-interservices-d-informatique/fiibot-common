@@ -7,7 +7,7 @@ export default class PingCommand extends Command {
         super(client, {
             name: 'ping',
             description: 'Get bot ping'
-        }, {});
+        });
     }
     async run(inter: CommandInteraction): Promise<void> {
         inter.reply("Heeeello");

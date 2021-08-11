@@ -23,12 +23,12 @@ export class Command {
     constructor(
         client: fiiClient,
         appCommand: ApplicationCommandData,
-        extraOptions: commandOptions,
+        extraOptions?: commandOptions,
         data?: Map<string, unknown>
     ) {
         this.client = client;
         this.appCommand = appCommand;
-        this.extraOptions = extraOptions;
+        this.extraOptions = extraOptions || {};
         this.data = data || new Map();
     }
     // eslint-disable-next-line
