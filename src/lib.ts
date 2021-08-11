@@ -5,10 +5,6 @@ export * from "./classes/client.js";
  */
 export interface fiiClientOptions {
     /**
-     * Prefix of the client
-     */
-    prefix: string;
-    /**
      * Settings to pass to CommandManager
      */
     commandManagerSettings: CommandManagerSettings;
