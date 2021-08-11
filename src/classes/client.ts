@@ -21,10 +21,7 @@ export class fiiClient extends Client {
     constructor(djsopts: ClientOptions, opts: fiiClientOptions) {
         super(djsopts);
         this.logger = new fiiLogger();
-        this.commandManager = new CommandManager(
-            this,
-            opts.commandManagerSettings
-        );
+
         this.fiiSettings = opts;
 
         this.eventManager = new EventManager(this);
@@ -68,6 +65,13 @@ export class fiiClient extends Client {
                 }
             }
         );
+        this.login(opts.token).then(_ => {
+            this.commandManager = new CommandManager(
+                this,
+                opts.commandManagerSettings
+            );
+        }).catch(e => console.log)
+
     }
     isOwner(user: UserResolvable): boolean {
         if (this.fiiSettings.owners.length === 0) {
