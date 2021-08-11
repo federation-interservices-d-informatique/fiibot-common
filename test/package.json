@@ -23,7 +23,7 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "discord.js": "^13.0.0-dev.d310e4f.1627560163",
+    "discord.js": "^13.0.1",
     "dotenv": "^10.0.0"
   }
 }
