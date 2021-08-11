@@ -26,6 +26,7 @@ export class fiiClient extends Client {
             opts.commandManagerSettings
         );
         this.fiiSettings = opts;
+
         this.eventManager = new EventManager(this);
         this.eventManager.registerEvent("loginfos", "ready", (): void => {
             this.logger
