@@ -62,16 +62,10 @@ export class fiiClient extends Client {
                     .split(/ +/g);
                 const command = args.shift().toLowerCase();
                 if (
-                    !this.commandManager.aliases.has(command) &&
                     !this.commandManager.commands.has(command)
                 )
                     return;
-                let cmd: Command;
-                if (this.commandManager.aliases.has(command)) {
-                    cmd = this.commandManager.aliases.get(command);
-                } else {
-                    cmd = this.commandManager.commands.get(command);
-                }
+                let cmd = this.commandManager.commands.get(command);
                 if (!cmd.hasBotPermission(msg) || !cmd.hasPermission(msg))
                     return;
                 try {
