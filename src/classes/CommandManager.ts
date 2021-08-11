@@ -9,10 +9,6 @@ import { walkDir } from "../utils/FileSystem.js";
 export class CommandManager {
     /// Commands store
     public commands: Map<string, Command>;
-    /// Aliases store
-    public aliases: Map<string, Command>;
-    /// Paths to commands (for reloading)
-    private paths: Map<string, string>;
     /// Discord Client
     private client: fiiClient;
     /// Settings (commands path, ...)
@@ -20,8 +16,6 @@ export class CommandManager {
 
     constructor(client: fiiClient, settings: CommandManagerSettings) {
         this.client = client;
-        this.paths = new Map();
-        this.aliases = new Map();
         this.commands = new Map();
         this.settings = settings;
         this.init();
@@ -47,25 +41,7 @@ export class CommandManager {
     loadCommand = async (file: string): Promise<void> => {
         const imported = (await import(file)).default;
         const cmd: Command = new imported(this.client);
-        this.paths.set(cmd.infos.name, file);
-        this.client.logger.info(`Loading command ${cmd.infos.name}`, "LOADER");
-        this.commands.set(cmd.infos.name, cmd);
-        if (cmd.infos.aliases) {
-            cmd.infos.aliases.forEach((alias) => {
-                this.aliases.set(alias, cmd);
-            });
-        }
-        this.paths.set(cmd.infos.name, file);
+        this.client.logger.info(`Loading command ${cmd.appCommand.name}`, "LOADER");
+        this.commands.set(cmd.appCommand.name, cmd);
     };
-    unloadCommand(name: string): void {
-        let command: Command;
-        if (this.commands.has(name)) {
-            this.client.logger.warn(`Unloading command ${name}`, "HANDLER");
-            command = this.commands.get(name);
-            command.infos.aliases.forEach((alias) => {
-                this.aliases.delete(alias);
-            });
-            this.commands.delete(name);
-        }
-    }
 }
