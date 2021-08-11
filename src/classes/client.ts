@@ -1,4 +1,4 @@
-import { Client, ClientOptions, UserResolvable } from "discord.js";
+import { Client, ClientOptions, Interaction, UserResolvable } from "discord.js";
 import { fiiClientOptions } from "../lib.js";
 import { Command } from "./command.js";
 import { CommandManager } from "./CommandManager.js";
@@ -50,26 +50,18 @@ export class fiiClient extends Client {
             }
         );
         this.eventManager.registerEvent(
-            "processcommand",
-            "messageCreate",
-            async (msg) => {
-                if (msg.partial) await msg.fetch();
-                if (msg.author.bot) return; //Stop if the author is a bot or a WebHook
-                if (msg.content.indexOf(this.fiiSettings.prefix) !== 0) return;
-                const args = msg.content
-                    .slice(this.fiiSettings.prefix.length)
-                    .trim()
-                    .split(/ +/g);
-                const command = args.shift().toLowerCase();
-                if (
-                    !this.commandManager.commands.has(command)
-                )
-                    return;
-                let cmd = this.commandManager.commands.get(command);
-                if (!cmd.hasBotPermission(msg) || !cmd.hasPermission(msg))
+            "processAppCommand",
+            "interactionCreate",
+            async (inter: Interaction) => {
+                if (!inter.isCommand()) return;
+                // NOTE: I am not sure if a bot can trigger an interaction
+                if (inter.user.bot) return; //Stop if the author is a bot or a WebHook
+                let cmd = this.commandManager.commands.get(inter.commandName);
+                if (!cmd) return;
+                if (!cmd.hasBotPermission(inter) || !cmd.hasPermission(inter))
                     return;
                 try {
-                    cmd.run(msg);
+                    cmd.run(inter);
                 } catch (e) {
                     console.log(e);
                 }
