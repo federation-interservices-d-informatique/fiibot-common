@@ -1,6 +1,6 @@
-import { CommandInteraction } from "discord.js";
+import { ApplicationCommandData, CommandInteraction } from "discord.js";
 import { commandOptions } from "../lib";
-import { canSendEmbeds, canSendMessage } from "../utils/Permissions.js";
+import { canSendEmbeds } from "../utils/Permissions.js";
 import { fiiClient } from "./client";
 
 /**
@@ -8,23 +8,27 @@ import { fiiClient } from "./client";
  */
 export class Command {
     /** Command options (name, description, ...) */
-    infos: commandOptions;
+    extraOptions: commandOptions;
     /** Discord client (we can also use message.client) */
     client: fiiClient;
     /** Command temp data */
     data: Map<string, string | unknown>;
+    /** Data for applications command */
+    appCommand: ApplicationCommandData;
     /**
      * Create a new command (must be extended)
      * @param client - The client
-     * @param options - Command options
+     * @param extraOptions - Command extra options
      */
     constructor(
         client: fiiClient,
-        options: commandOptions,
+        appCommand: ApplicationCommandData,
+        extraOptions: commandOptions,
         data?: Map<string, unknown>
     ) {
         this.client = client;
-        this.infos = options;
+        this.appCommand = appCommand;
+        this.extraOptions = extraOptions;
         this.data = data || new Map();
     }
     // eslint-disable-next-line
@@ -32,33 +36,33 @@ export class Command {
         inter.reply("NYI!");
     }
     hasPermission(inter: CommandInteraction): boolean {
-        if (!inter.guild && !this.infos.ownerOnly) {
+        if (!inter.guild && !this.extraOptions.ownerOnly) {
             return true;
         }
-        if (!this.infos.ownerOnly && !this.infos.userPermissions) {
+        if (!this.extraOptions.ownerOnly && !this.extraOptions.userPermissions) {
             return true;
         }
         if (this.client.isOwner(inter.user)) {
             return true;
         }
-        if (this.infos.ownerOnly && !this.client.isOwner(inter.user)) {
+        if (this.extraOptions.ownerOnly && !this.client.isOwner(inter.user)) {
             inter.reply(
-                `La commande \`${this.infos.name}\` ne peut être utilisée que par un owner du bot!`
+                `La commande \`${this.appCommand.name}\` ne peut être utilisée que par un owner du bot!`
             );
             return false;
         }
-        if (this.infos.guildOnly && !inter.guild) return false;
+        if (this.extraOptions.guildOnly && !inter.guild) return false;
         if (inter.channel.type != "DM") {
             const missing = inter.channel
                 .permissionsFor(inter.user)
-                .missing(this.infos.userPermissions);
+                .missing(this.extraOptions.userPermissions);
             if (missing.length > 0) {
                 inter.reply({
                     embeds: [
                         {
                             title: "Manque de permissions:",
-                            description: `La commande ${this.infos.name
-                                } requiert les permissions suivantes: ${this.infos.userPermissions.join(
+                            description: `La commande ${this.appCommand.name
+                                } requiert les permissions suivantes: ${this.extraOptions.userPermissions.join(
                                     ","
                                 )}`,
                             color: "RED"
@@ -72,19 +76,18 @@ export class Command {
     }
     hasBotPermission(inter: CommandInteraction): boolean {
         if (!inter.guild) return true;
-        if (!canSendMessage(inter.guild)) return false;
         if (inter.channel.type != "DM") {
             const missing = inter.channel
                 .permissionsFor(inter.guild.me)
-                .missing(this.infos.clientPermissions);
+                .missing(this.extraOptions.clientPermissions);
             if (missing.length > 0) {
                 if (canSendEmbeds(inter.guild)) {
                     inter.reply({
                         embeds: [
                             {
                                 title: "Manque de permissions:",
-                                description: `Je ne peux pas exécuter la commande \`${this.infos.name
-                                    }\` car elle requiert que j'aie les permissions suivantes: ${this.infos.clientPermissions.join(
+                                description: `Je ne peux pas exécuter la commande \`${this.appCommand.name
+                                    }\` car elle requiert que j'aie les permissions suivantes: ${this.extraOptions.clientPermissions.join(
                                         ","
                                     )}`,
                                 color: "RED"
@@ -93,8 +96,8 @@ export class Command {
                     });
                 } else {
                     inter.reply(
-                        `Erreur: Je ne peux pas exécuter la commande \`${this.infos.name
-                        }\` car elle requiert que j'aie les permissions suivantes: ${this.infos.clientPermissions.join(
+                        `Erreur: Je ne peux pas exécuter la commande \`${this.appCommand.name
+                        }\` car elle requiert que j'aie les permissions suivantes: ${this.extraOptions.clientPermissions.join(
                             ","
                         )}`
                     );
