@@ -1,5 +1,6 @@
 import { PermissionResolvable } from "discord.js";
 export * from "./classes/client.js";
+export * from "./classes/command.js";
 /**
  * fii Client options
  */
