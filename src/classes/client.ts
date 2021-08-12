@@ -3,6 +3,10 @@ import { fiiClientOptions } from "../lib.js";
 import { CommandManager } from "./CommandManager.js";
 import { EventManager } from "./EventManager.js";
 import { fiiLogger } from "./logger.js";
+import {
+    Client as PostgresClient,
+    Configuration as PostgresConfiguration
+} from "ts-postgres";
 
 /**
  * FII extension of base Discord.JS client
@@ -17,7 +21,12 @@ export class fiiClient extends Client {
     commandManager: CommandManager;
     fiiSettings: fiiClientOptions;
     eventManager: EventManager;
-    constructor(djsopts: ClientOptions, opts: fiiClientOptions) {
+    dbclient?: PostgresClient;
+    constructor(
+        djsopts: ClientOptions,
+        opts: fiiClientOptions,
+        postgresConfig?: PostgresConfiguration
+    ) {
         super(djsopts);
         this.logger = new fiiLogger();
 
@@ -72,6 +81,11 @@ export class fiiClient extends Client {
                 );
             })
             .catch(console.log);
+        if (postgresConfig) {
+            this.logger.info("Initialising DB client", "CLIENT");
+            this.dbclient = new PostgresClient(postgresConfig);
+            this.logger.ok("DB initialised!", "CLIENT");
+        }
     }
     isOwner(user: UserResolvable): boolean {
         if (this.fiiSettings.owners.length === 0) {
