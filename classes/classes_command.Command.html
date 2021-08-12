@@ -96,9 +96,10 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="classes_command.Command.html#appCommand" class="tsd-kind-icon">app<wbr>Command</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="classes_command.Command.html#client" class="tsd-kind-icon">client</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="classes_command.Command.html#data" class="tsd-kind-icon">data</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="classes_command.Command.html#infos" class="tsd-kind-icon">infos</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="classes_command.Command.html#extraOptions" class="tsd-kind-icon">extra<wbr>Options</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -118,13 +119,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Command<span class="tsd-signature-symbol">(</span>client<span class="tsd-signature-symbol">: </span><a href="classes_client.fiiClient.html" class="tsd-signature-type" data-tsd-kind="Class">fiiClient</a>, options<span class="tsd-signature-symbol">: </span><a href="../interfaces/lib.commandOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">commandOptions</a>, data<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="classes_command.Command.html" class="tsd-signature-type" data-tsd-kind="Class">Command</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Command<span class="tsd-signature-symbol">(</span>client<span class="tsd-signature-symbol">: </span><a href="classes_client.fiiClient.html" class="tsd-signature-type" data-tsd-kind="Class">fiiClient</a>, appCommand<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ApplicationCommandData</span>, extraOptions<span class="tsd-signature-symbol">?: </span><a href="../interfaces/lib.commandOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">commandOptions</a>, data<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="classes_command.Command.html" class="tsd-signature-type" data-tsd-kind="Class">Command</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/c18ba11/src/classes/command.ts#L21">src/classes/command.ts:21</a></li>
+									<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/b686069/src/classes/command.ts#L23">src/classes/command.ts:23</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -143,10 +144,13 @@
 									</div>
 								</li>
 								<li>
-									<h5>options: <a href="../interfaces/lib.commandOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">commandOptions</a></h5>
+									<h5>appCommand: <span class="tsd-signature-type">ApplicationCommandData</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> extraOptions: <a href="../interfaces/lib.commandOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">commandOptions</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>Command options</p>
+											<p>Command extra options</p>
 										</div>
 									</div>
 								</li>
@@ -162,12 +166,27 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="appCommand" class="tsd-anchor"></a>
+					<h3>app<wbr>Command</h3>
+					<div class="tsd-signature tsd-kind-icon">app<wbr>Command<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ApplicationCommandData</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/b686069/src/classes/command.ts#L17">src/classes/command.ts:17</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Data for applications command</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="client" class="tsd-anchor"></a>
 					<h3>client</h3>
 					<div class="tsd-signature tsd-kind-icon">client<span class="tsd-signature-symbol">:</span> <a href="classes_client.fiiClient.html" class="tsd-signature-type" data-tsd-kind="Class">fiiClient</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/c18ba11/src/classes/command.ts#L13">src/classes/command.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/b686069/src/classes/command.ts#L13">src/classes/command.ts:13</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -182,7 +201,7 @@
 					<div class="tsd-signature tsd-kind-icon">data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/c18ba11/src/classes/command.ts#L15">src/classes/command.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/b686069/src/classes/command.ts#L15">src/classes/command.ts:15</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -192,12 +211,12 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="infos" class="tsd-anchor"></a>
-					<h3>infos</h3>
-					<div class="tsd-signature tsd-kind-icon">infos<span class="tsd-signature-symbol">:</span> <a href="../interfaces/lib.commandOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">commandOptions</a></div>
+					<a name="extraOptions" class="tsd-anchor"></a>
+					<h3>extra<wbr>Options</h3>
+					<div class="tsd-signature tsd-kind-icon">extra<wbr>Options<span class="tsd-signature-symbol">:</span> <a href="../interfaces/lib.commandOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">commandOptions</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/c18ba11/src/classes/command.ts#L11">src/classes/command.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/b686069/src/classes/command.ts#L11">src/classes/command.ts:11</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -213,19 +232,19 @@
 					<a name="hasBotPermission" class="tsd-anchor"></a>
 					<h3>has<wbr>Bot<wbr>Permission</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">has<wbr>Bot<wbr>Permission<span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Message</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">has<wbr>Bot<wbr>Permission<span class="tsd-signature-symbol">(</span>inter<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">CommandInteraction</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/c18ba11/src/classes/command.ts#L74">src/classes/command.ts:74</a></li>
+									<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/b686069/src/classes/command.ts#L81">src/classes/command.ts:81</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>message: <span class="tsd-signature-type">Message</span></h5>
+									<h5>inter: <span class="tsd-signature-type">CommandInteraction</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -236,19 +255,19 @@
 					<a name="hasPermission" class="tsd-anchor"></a>
 					<h3>has<wbr>Permission</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">has<wbr>Permission<span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Message</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">has<wbr>Permission<span class="tsd-signature-symbol">(</span>inter<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">CommandInteraction</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/c18ba11/src/classes/command.ts#L34">src/classes/command.ts:34</a></li>
+									<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/b686069/src/classes/command.ts#L38">src/classes/command.ts:38</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>message: <span class="tsd-signature-type">Message</span></h5>
+									<h5>inter: <span class="tsd-signature-type">CommandInteraction</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -259,22 +278,19 @@
 					<a name="run" class="tsd-anchor"></a>
 					<h3>run</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">run<span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Message</span>, args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">run<span class="tsd-signature-symbol">(</span>inter<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">CommandInteraction</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/c18ba11/src/classes/command.ts#L31">src/classes/command.ts:31</a></li>
+									<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/b686069/src/classes/command.ts#L35">src/classes/command.ts:35</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>message: <span class="tsd-signature-type">Message</span></h5>
-								</li>
-								<li>
-									<h5>args: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>inter: <span class="tsd-signature-type">CommandInteraction</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -338,13 +354,16 @@
 								<a href="classes_command.Command.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="classes_command.Command.html#appCommand" class="tsd-kind-icon">app<wbr>Command</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="classes_command.Command.html#client" class="tsd-kind-icon">client</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="classes_command.Command.html#data" class="tsd-kind-icon">data</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="classes_command.Command.html#infos" class="tsd-kind-icon">infos</a>
+								<a href="classes_command.Command.html#extraOptions" class="tsd-kind-icon">extra<wbr>Options</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="classes_command.Command.html#hasBotPermission" class="tsd-kind-icon">has<wbr>Bot<wbr>Permission</a>
