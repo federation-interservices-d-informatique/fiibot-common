@@ -15,7 +15,7 @@ export const walkDir = (fpath: string, filter?: string): string[] => {
             file.endsWith(filter ?? ".js")
         ) {
             result.push(`${fpath}/${file}`);
-        } else if (lstatSync(file).isDirectory()) {
+        } else if (lstatSync(`${fpath}/${file}`).isDirectory()) {
             walkDir(`${fpath}/${file}`).forEach(result.push);
         }
     });
