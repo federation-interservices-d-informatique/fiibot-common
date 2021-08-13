@@ -84,7 +84,9 @@ export class fiiClient extends Client {
         if (postgresConfig) {
             this.logger.info("Initialising DB client", "CLIENT");
             this.dbclient = new PostgresClient(postgresConfig);
-            this.logger.ok("DB initialised!", "CLIENT");
+            this.dbclient.connect().then(() => {
+                this.logger.ok("DB initialised!", "CLIENT");
+            });
         }
     }
     isOwner(user: UserResolvable): boolean {
