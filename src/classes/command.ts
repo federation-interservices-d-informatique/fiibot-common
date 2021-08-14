@@ -28,6 +28,9 @@ export class Command {
     ) {
         this.client = client;
         this.appCommand = appCommand;
+        if (!this.appCommand.options) {
+            this.appCommand.options = [];
+        }
         this.extraOptions = extraOptions || {};
         this.data = data || new Map();
     }
