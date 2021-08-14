@@ -35,10 +35,37 @@ export class CommandManager {
             });
         });
 
-        // Flush commands list
-        this.client.application.commands.set([]);
-        commandFiles.forEach(async (file) => {
-            await this.loadCommand(file);
+        this.loadCommands(commandFiles).then(() => {
+            this.client.logger.ok("Loaded all commands", "LOADER");
+        });
+    };
+    loadCommands = async (files: string[]): Promise<void> => {
+        files.forEach(this.loadCommand);
+        const commandsList = await this.client.application.commands.fetch();
+        this.commands.forEach((cmd) => {
+            const command = commandsList.filter(
+                (c) => c.name === cmd.appCommand.name
+            );
+            if (command.size === 0) {
+                console.log(command);
+                this.client.application.commands.create(cmd.appCommand);
+            } else {
+                if (
+                    command.first().description !==
+                        cmd.appCommand.description ||
+                    cmd.appCommand.options !== command.first().options
+                ) {
+                    this.client.application.commands.edit(
+                        command.first().id,
+                        cmd.appCommand
+                    );
+                }
+            }
+        });
+        commandsList.forEach(async (cmd) => {
+            if (!this.commands.has(cmd.name)) {
+                await this.client.application.commands.delete(cmd.id);
+            }
         });
     };
     loadCommand = async (file: string): Promise<void> => {
@@ -49,6 +76,5 @@ export class CommandManager {
             "LOADER"
         );
         this.commands.set(cmd.appCommand.name, cmd);
-        this.client.application.commands.create(cmd.appCommand);
     };
 }
