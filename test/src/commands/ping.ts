@@ -10,6 +10,6 @@ export default class PingCommand extends Command {
         });
     }
     async run(inter: CommandInteraction): Promise<void> {
-        inter.reply("Heeeello");
+        inter.reply("Heeeeeello");
     }
 }
