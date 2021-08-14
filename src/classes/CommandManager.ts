@@ -47,6 +47,10 @@ export class CommandManager {
                 (c) => c.name === cmd.appCommand.name
             );
             if (command.size === 0) {
+                this.client.logger.info(
+                    `Creating command ${cmd.appCommand.name}`,
+                    "LOADER"
+                );
                 this.client.application.commands.create(cmd.appCommand);
             } else {
                 if (
@@ -54,6 +58,10 @@ export class CommandManager {
                     JSON.stringify(cmd.appCommand.options) !=
                         JSON.stringify(command.first().options)
                 ) {
+                    this.client.logger.info(
+                        `Editing command ${cmd.appCommand.name}`,
+                        "LOADER"
+                    );
                     this.client.application.commands.edit(
                         command.first().id,
                         cmd.appCommand
@@ -63,7 +71,10 @@ export class CommandManager {
         });
         commandsList.forEach(async (cmd) => {
             if (!this.commands.has(cmd.name)) {
-                console.log(`DELETE ${cmd.name}`);
+                this.client.logger.warn(
+                    `Found deleted command ${cmd.name}, removing if from application`,
+                    "LOADER"
+                );
                 await this.client.application.commands.delete(cmd.id);
             }
         });
