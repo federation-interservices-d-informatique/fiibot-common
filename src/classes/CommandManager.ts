@@ -47,7 +47,6 @@ export class CommandManager {
                 (c) => c.name === cmd.appCommand.name
             );
             if (command.size === 0) {
-                console.log(`EDIT ${cmd.appCommand.name}`);
                 this.client.application.commands.create(cmd.appCommand);
             } else {
                 if (
@@ -55,7 +54,6 @@ export class CommandManager {
                     JSON.stringify(cmd.appCommand.options) !=
                         JSON.stringify(command.first().options)
                 ) {
-                    console.log(`EDIT ${cmd.appCommand.name}`);
                     this.client.application.commands.edit(
                         command.first().id,
                         cmd.appCommand
