@@ -47,14 +47,15 @@ export class CommandManager {
                 (c) => c.name === cmd.appCommand.name
             );
             if (command.size === 0) {
-                console.log(command);
+                console.log(`EDIT ${cmd.appCommand.name}`);
                 this.client.application.commands.create(cmd.appCommand);
             } else {
                 if (
-                    command.first().description !==
-                        cmd.appCommand.description ||
-                    cmd.appCommand.options !== command.first().options
+                    command.first().description != cmd.appCommand.description ||
+                    JSON.stringify(cmd.appCommand.options) !=
+                        JSON.stringify(command.first().options)
                 ) {
+                    console.log(`EDIT ${cmd.appCommand.name}`);
                     this.client.application.commands.edit(
                         command.first().id,
                         cmd.appCommand
@@ -64,6 +65,7 @@ export class CommandManager {
         });
         commandsList.forEach(async (cmd) => {
             if (!this.commands.has(cmd.name)) {
+                console.log(`DELETE ${cmd.name}`);
                 await this.client.application.commands.delete(cmd.id);
             }
         });
