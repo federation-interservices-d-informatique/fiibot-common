@@ -5,8 +5,8 @@ import { EventManager } from "./EventManager.js";
 import { fiiLogger } from "./logger.js";
 import {
     Client as PostgresClient,
-    Configuration as PostgresConfiguration
-} from "ts-postgres";
+    ClientConfig as PostgresConfiguration
+} from "pg";
 
 /**
  * FII extension of base Discord.JS client
