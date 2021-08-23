@@ -36,7 +36,10 @@ export class Command {
     }
     // eslint-disable-next-line
     async run(inter: CommandInteraction): Promise<void> {
-        inter.reply("NYI!");
+        inter.reply({
+            ephemeral: true,
+            content: "NYI!"
+        });
     }
     hasPermission(inter: CommandInteraction): boolean {
         if (!inter.guild && !this.extraOptions.ownerOnly) {
@@ -52,9 +55,10 @@ export class Command {
             return true;
         }
         if (this.extraOptions.ownerOnly && !this.client.isOwner(inter.user)) {
-            inter.reply(
-                `La commande \`${this.appCommand.name}\` ne peut être utilisée que par un owner du bot!`
-            );
+            inter.reply({
+                ephemeral: true,
+                content: `La commande \`${this.appCommand.name}\` ne peut être utilisée que par un owner du bot!`
+            });
             return false;
         }
         if (this.extraOptions.guildOnly && !inter.guild) return false;
@@ -64,6 +68,7 @@ export class Command {
                 .missing(this.extraOptions.userPermissions);
             if (missing.length > 0) {
                 inter.reply({
+                    ephemeral: true,
                     embeds: [
                         {
                             title: "Manque de permissions:",
@@ -90,6 +95,7 @@ export class Command {
             if (missing.length > 0) {
                 if (canSendEmbeds(inter.guild)) {
                     inter.reply({
+                        ephemeral: true,
                         embeds: [
                             {
                                 title: "Manque de permissions:",
@@ -103,13 +109,14 @@ export class Command {
                         ]
                     });
                 } else {
-                    inter.reply(
-                        `Erreur: Je ne peux pas exécuter la commande \`${
+                    inter.reply({
+                        ephemeral: true,
+                        content: `Erreur: Je ne peux pas exécuter la commande \`${
                             this.appCommand.name
                         }\` car elle requiert que j'aie les permissions suivantes: ${this.extraOptions.clientPermissions.join(
                             ","
                         )}`
-                    );
+                    });
                 }
                 return false;
             }
