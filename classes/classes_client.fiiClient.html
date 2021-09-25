@@ -174,14 +174,14 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new fii<wbr>Client<span class="tsd-signature-symbol">(</span>djsopts<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ClientOptions</span>, opts<span class="tsd-signature-symbol">: </span><a href="../interfaces/lib.fiiClientOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">fiiClientOptions</a>, postgresConfig<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ClientConfig</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="classes_client.fiiClient.html" class="tsd-signature-type" data-tsd-kind="Class">fiiClient</a></li>
+						<li class="tsd-signature tsd-kind-icon">new fii<wbr>Client<span class="tsd-signature-symbol">(</span>djsopts<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ClientOptions</span>, opts<span class="tsd-signature-symbol">: </span><a href="../interfaces/lib.fiiClientOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">fiiClientOptions</a>, postgresConfig<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">PskvInitOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="classes_client.fiiClient.html" class="tsd-signature-type" data-tsd-kind="Class">fiiClient</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides Client.constructor</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/eccd832/src/classes/client.ts#L22">src/classes/client.ts:22</a></li>
+									<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/f2ed2dc/src/classes/client.ts#L21">src/classes/client.ts:21</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -193,7 +193,7 @@
 									<h5>opts: <a href="../interfaces/lib.fiiClientOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">fiiClientOptions</a></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> postgresConfig: <span class="tsd-signature-type">ClientConfig</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> postgresConfig: <span class="tsd-signature-type">PskvInitOptions</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="classes_client.fiiClient.html" class="tsd-signature-type" data-tsd-kind="Class">fiiClient</a></h4>
@@ -231,17 +231,17 @@
 					<div class="tsd-signature tsd-kind-icon">command<wbr>Manager<span class="tsd-signature-symbol">:</span> <a href="classes_CommandManager.CommandManager.html" class="tsd-signature-type" data-tsd-kind="Class">CommandManager</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/eccd832/src/classes/client.ts#L18">src/classes/client.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/f2ed2dc/src/classes/client.ts#L17">src/classes/client.ts:17</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="dbclient" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> dbclient</h3>
-					<div class="tsd-signature tsd-kind-icon">dbclient<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Client</span></div>
+					<div class="tsd-signature tsd-kind-icon">dbclient<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Pskv</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/eccd832/src/classes/client.ts#L21">src/classes/client.ts:21</a></li>
+							<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/f2ed2dc/src/classes/client.ts#L20">src/classes/client.ts:20</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -262,7 +262,7 @@
 					<div class="tsd-signature tsd-kind-icon">event<wbr>Manager<span class="tsd-signature-symbol">:</span> <a href="classes_EventManager.EventManager.html" class="tsd-signature-type" data-tsd-kind="Class">EventManager</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/eccd832/src/classes/client.ts#L20">src/classes/client.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/f2ed2dc/src/classes/client.ts#L19">src/classes/client.ts:19</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -272,7 +272,7 @@
 					<div class="tsd-signature tsd-kind-icon">fii<wbr>Settings<span class="tsd-signature-symbol">:</span> <a href="../interfaces/lib.fiiClientOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">fiiClientOptions</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/eccd832/src/classes/client.ts#L19">src/classes/client.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/f2ed2dc/src/classes/client.ts#L18">src/classes/client.ts:18</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -293,7 +293,7 @@
 					<div class="tsd-signature tsd-kind-icon">logger<span class="tsd-signature-symbol">:</span> <a href="classes_logger.fiiLogger.html" class="tsd-signature-type" data-tsd-kind="Class">fiiLogger</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/eccd832/src/classes/client.ts#L17">src/classes/client.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/f2ed2dc/src/classes/client.ts#L16">src/classes/client.ts:16</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -896,7 +896,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/eccd832/src/classes/client.ts#L89">src/classes/client.ts:89</a></li>
+									<li>Defined in <a href="https://github.com/federation-interservices-d-informatique/fiibot-common/blob/f2ed2dc/src/classes/client.ts#L88">src/classes/client.ts:88</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
