@@ -3,8 +3,7 @@ import { fiiClientOptions } from "../lib.js";
 import { CommandManager } from "./CommandManager.js";
 import { EventManager } from "./EventManager.js";
 import { fiiLogger } from "./logger.js";
-import pg from "pg";
-
+import { Pskv, PskvInitOptions } from "pskv";
 /**
  * FII extension of base Discord.JS client
  */
@@ -18,11 +17,11 @@ export class fiiClient extends Client {
     commandManager: CommandManager;
     fiiSettings: fiiClientOptions;
     eventManager: EventManager;
-    dbclient?: pg.Client;
+    dbclient?: Pskv;
     constructor(
         djsopts: ClientOptions,
         opts: fiiClientOptions,
-        postgresConfig?: pg.ClientConfig
+        postgresConfig?: PskvInitOptions
     ) {
         super(djsopts);
         this.logger = new fiiLogger();
@@ -80,7 +79,7 @@ export class fiiClient extends Client {
             .catch(console.log);
         if (postgresConfig) {
             this.logger.info("Initialising DB client", "CLIENT");
-            this.dbclient = new pg.Client(postgresConfig);
+            this.dbclient = new Pskv(postgresConfig);
             this.dbclient.connect().then(() => {
                 this.logger.ok("DB initialised!", "CLIENT");
             });
