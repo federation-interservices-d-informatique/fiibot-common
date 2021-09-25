@@ -42,4 +42,4 @@ export interface CommandManagerSettings {
     commandsPath: Array<string>;
 }
 
-export const VERSION = "2.4.0";
+export const VERSION = "3.0.0";
