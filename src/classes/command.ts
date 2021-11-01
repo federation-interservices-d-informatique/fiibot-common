@@ -1,4 +1,7 @@
-import { ApplicationCommandData, CommandInteraction } from "discord.js";
+import {
+    ChatInputApplicationCommandData,
+    CommandInteraction
+} from "discord.js";
 import { commandOptions } from "../lib";
 import { canSendEmbeds } from "../utils/Permissions.js";
 import { fiiClient } from "./client";
@@ -14,7 +17,7 @@ export class Command {
     /** Command temp data */
     data: Map<string, string | unknown>;
     /** Data for applications command */
-    appCommand: ApplicationCommandData;
+    appCommand: ChatInputApplicationCommandData;
     /**
      * Create a new command (must be extended)
      * @param client - The client
@@ -22,7 +25,7 @@ export class Command {
      */
     constructor(
         client: fiiClient,
-        appCommand: ApplicationCommandData,
+        appCommand: ChatInputApplicationCommandData,
         extraOptions?: commandOptions,
         data?: Map<string, unknown>
     ) {
