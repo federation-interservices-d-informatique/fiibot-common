@@ -53,7 +53,7 @@ export class CommandManager {
                 );
                 this.client.application.commands.create(cmd.appCommand);
             } else {
-                if (command.first().equals(cmd.appCommand)) {
+                if (!command.first().equals(cmd.appCommand)) {
                     this.client.logger.info(
                         `Editing command ${cmd.appCommand.name}`,
                         "LOADER"
