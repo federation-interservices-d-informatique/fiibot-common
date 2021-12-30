@@ -27,13 +27,18 @@ export class Command {
      */
     constructor(
         client: fiiClient,
-        appCommand: ChatInputApplicationCommandData | MessageApplicationCommandData,
+        appCommand:
+            | ChatInputApplicationCommandData
+            | MessageApplicationCommandData,
         extraOptions?: commandOptions,
         data?: Map<string, unknown>
     ) {
         this.client = client;
         this.appCommand = appCommand;
-        if (this.appCommand.type === ApplicationCommandTypes.CHAT_INPUT || this.appCommand.type === "CHAT_INPUT") {
+        if (
+            this.appCommand.type === ApplicationCommandTypes.CHAT_INPUT ||
+            this.appCommand.type === "CHAT_INPUT"
+        ) {
             if (!this.appCommand.options) {
                 this.appCommand.options = [];
             }
