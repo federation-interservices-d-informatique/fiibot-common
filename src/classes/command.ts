@@ -1,7 +1,9 @@
 import {
     ChatInputApplicationCommandData,
-    CommandInteraction
+    CommandInteraction,
+    MessageApplicationCommandData
 } from "discord.js";
+import { ApplicationCommandTypes } from "discord.js/typings/enums";
 import { commandOptions } from "../lib";
 import { canSendEmbeds } from "../utils/Permissions.js";
 import { fiiClient } from "./client";
@@ -17,7 +19,7 @@ export class Command {
     /** Command temp data */
     data: Map<string, string | unknown>;
     /** Data for applications command */
-    appCommand: ChatInputApplicationCommandData;
+    appCommand: ChatInputApplicationCommandData | MessageApplicationCommandData;
     /**
      * Create a new command (must be extended)
      * @param client - The client
@@ -25,14 +27,16 @@ export class Command {
      */
     constructor(
         client: fiiClient,
-        appCommand: ChatInputApplicationCommandData,
+        appCommand: ChatInputApplicationCommandData | MessageApplicationCommandData,
         extraOptions?: commandOptions,
         data?: Map<string, unknown>
     ) {
         this.client = client;
         this.appCommand = appCommand;
-        if (!this.appCommand.options) {
-            this.appCommand.options = [];
+        if (this.appCommand.type === ApplicationCommandTypes.CHAT_INPUT || this.appCommand.type === "CHAT_INPUT") {
+            if (!this.appCommand.options) {
+                this.appCommand.options = [];
+            }
         }
         this.extraOptions = extraOptions || {};
         this.data = data || new Map();
