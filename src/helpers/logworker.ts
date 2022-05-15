@@ -2,9 +2,10 @@ import { WebhookClient } from "discord.js";
 import { parentPort } from "worker_threads";
 
 const whclient = new WebhookClient(
+    // Just values to fill, will crash anyway
     {
-        id: `${BigInt(process.env.LOGS_WEBHOOK_ID)}`,
-        token: process.env.LOGS_WEBHOOK_TOKEN
+        id: process.env.LOGS_WEBHOOK_ID || "5",
+        token: process.env.LOGS_WEBHOOK_TOKEN || "5"
     },
     {}
 );
@@ -13,6 +14,8 @@ const postHook = (msg: string): void => {
     /* eslint-disable-next-line */
     whclient.send(msg).catch(() => {});
 };
-parentPort.on("message", (msg: string) => {
-    parentPort.postMessage(postHook(msg));
+// Should work in all cases, but TypeScript gives a warning so we add ?.
+
+parentPort?.on("message", (msg: string) => {
+    parentPort?.postMessage(postHook(msg));
 });
