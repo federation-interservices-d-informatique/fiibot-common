@@ -7,7 +7,7 @@ import { lstatSync } from "fs";
  * @returns Path to files
  */
 export const walkDir = (fpath: string, filter?: string): string[] => {
-    const result = [];
+    const result: string[] = [];
     const files = readdirSync(fpath);
     files.forEach((file: string) => {
         if (
@@ -16,7 +16,7 @@ export const walkDir = (fpath: string, filter?: string): string[] => {
         ) {
             result.push(`${fpath}/${file}`);
         } else if (lstatSync(`${fpath}/${file}`).isDirectory()) {
-            walkDir(`${fpath}/${file}`).forEach(result.push);
+            result.push(...walkDir(`${fpath}/${file}`));
         }
     });
     return result;
