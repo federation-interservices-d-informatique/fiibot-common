@@ -3,6 +3,7 @@ import {
     ClientOptions,
     Interaction,
     ThreadChannel,
+    User,
     UserResolvable
 } from "discord.js";
 import { fiiClientOptions } from "../lib.js";
@@ -41,19 +42,30 @@ export class fiiClient extends Client {
             opts.interactionsManagerSettings
         );
 
-        this.eventManager.registerEvent("loginfos", "ready", (): void => {
-            this.logger
-                .ok(`Connected as ${this.user?.tag} (${this.user?.id})`, "BOT")
-                .ok(`Present in ${this.guilds.cache.size} guilds`, "BOT");
+        this.eventManager.registerEvent(
+            "loginfos",
+            "ready",
+            async (): Promise<void> => {
+                await this.application?.fetch();
+                this.logger
+                    .ok(
+                        `Connected as ${this.user?.tag} (${this.user?.id})`,
+                        "BOT"
+                    )
+                    .ok(`Present in ${this.guilds.cache.size} guilds`, "BOT");
 
-            // Join all unarchived threads found
-            this.channels.cache.forEach(async (chan) => {
-                if (chan.isThread() && !chan.archived) {
-                    this.logger.info(`Joined thread ${chan.name}`, "CLIENT");
-                    await chan.join();
-                }
-            });
-        });
+                // Join all unarchived threads found
+                this.channels.cache.forEach(async (chan) => {
+                    if (chan.isThread() && !chan.archived) {
+                        this.logger.info(
+                            `Joined thread ${chan.name}`,
+                            "CLIENT"
+                        );
+                        await chan.join();
+                    }
+                });
+            }
+        );
 
         // Join threads when they are created
         this.eventManager.registerEvent(
@@ -127,13 +139,21 @@ export class fiiClient extends Client {
      * @returns {boolean} True if the user is an owner
      */
     isOwner(user: UserResolvable): boolean {
-        if (this.fiiSettings.owners.length === 0) {
-            return false;
-        }
+        if (!this.isReady()) return false; // WTF? How can we get interactions if we are not ready?
+        // Just return false if application has problems
+        if (!this.application.owner) return false;
+
         const resolvedUser = this.users.resolve(user);
         if (!resolvedUser) {
             return false;
         }
-        return this.fiiSettings.owners.includes(parseInt(resolvedUser.id));
+        /*
+        Support user-owned bot, even if FII bots are owned by a Team
+        */
+        if (this.application.owner instanceof User) {
+            return this.application.owner.equals(resolvedUser);
+        } else {
+            return this.application.owner.members.has(resolvedUser.id);
+        }
     }
 }

@@ -12,10 +12,6 @@ export interface fiiClientOptions {
      */
     interactionsManagerSettings: InteractionManagerSettings;
     /**
-     * List of owners
-     */
-    owners: number[];
-    /**
      * Discord token
      */
     token: string;

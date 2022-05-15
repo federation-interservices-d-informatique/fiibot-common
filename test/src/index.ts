@@ -12,7 +12,6 @@ const client = new fiiClient(
         interactionsManagerSettings: {
             interactionsPath: [`${dirname(import.meta.url.substr(7))}/commands`]
         },
-        owners: process.env.OWNERS?.split(",").map((o) => parseInt(o)) || [],
         token: process.env.BOT_TOKEN || ""
     }
 );
