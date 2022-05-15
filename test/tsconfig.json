@@ -1,4 +1,5 @@
 {
+    "extends": "../tsconfig.json",
     "include": [
         "src/**/*.ts",
         "../src/**/*.ts"
@@ -8,11 +9,6 @@
         "dist"
     ],
     "compilerOptions": {
-        "allowJs": false,
-        "target": "esnext",
-        "outDir": "dist",
-        "moduleResolution": "node",
-        "module": "esnext",
-        "esModuleInterop": true
+        "outDir": "dist"
     }
 }

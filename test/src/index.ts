@@ -1,4 +1,4 @@
-import { fiiClient } from "../../src/index.js";
+import { fiiClient } from "../../src/lib.js";
 import { config as envconfig } from "dotenv";
 import { dirname } from "path";
 import { Intents } from "discord.js";
@@ -9,10 +9,10 @@ const client = new fiiClient(
         intents: new Intents(["GUILD_MESSAGES", "GUILDS"])
     },
     {
-        commandManagerSettings: {
-            commandsPath: [`${dirname(import.meta.url.substr(7))}/commands`]
+        interactionsManagerSettings: {
+            interactionsPath: [`${dirname(import.meta.url.substr(7))}/commands`]
         },
-        owners: process.env.OWNERS.split(",").map((o) => parseInt(o)),
-        token: process.env.BOT_TOKEN
+        owners: process.env.OWNERS?.split(",").map((o) => parseInt(o)) || [],
+        token: process.env.BOT_TOKEN || ""
     }
 );

@@ -1,6 +1,10 @@
 import { PermissionResolvable } from "discord.js";
 export * from "./classes/client.js";
-export * from "./classes/command.js";
+export * from "./classes/Interaction.js";
+export * from "./classes/EventManager.js";
+export * from "./classes/InteractionManager.js";
+export * from "./classes/logger.js";
+
 /**
  * fii Client options
  */
@@ -8,7 +12,7 @@ export interface fiiClientOptions {
     /**
      * Settings to pass to CommandManager
      */
-    commandManagerSettings: CommandManagerSettings;
+    interactionsManagerSettings: InteractionManagerSettings;
     /**
      * List of owners
      */
@@ -21,7 +25,7 @@ export interface fiiClientOptions {
 /**
  * Command options
  */
-export interface commandOptions {
+export interface interactionOptions {
     /** Set to true if the command can only be run in a guild */
     guildOnly?: boolean;
     /** Set to true if the command can be run by an owner  */
@@ -37,9 +41,9 @@ export interface commandOptions {
 /**
  * CommandManager settings
  */
-export interface CommandManagerSettings {
-    /** Commands paths */
-    commandsPath: Array<string>;
+export interface InteractionManagerSettings {
+    /** Interaction files paths */
+    interactionsPath: Array<string>;
 }
 
 export const VERSION = "3.1.0";
