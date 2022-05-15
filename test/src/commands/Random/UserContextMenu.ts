@@ -19,7 +19,8 @@ export default class UserContextMenuTestInteraction extends BotInteraction {
             ID: ${member.user.id}
             ${member.nickname ? `Surnom: ${member.nickname}` : ""} 
             Nom:${member.user.username}#${member.user.discriminator}
-        `,
+            isOwner: ${this.client.isOwner(member.user)}
+            `,
             ephemeral: true
         });
     }
