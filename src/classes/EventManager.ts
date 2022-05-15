@@ -59,13 +59,15 @@ export class EventManager {
         if (log) {
             this.client.logger.warn(`Deleting event ${name}`, "EVENTMANAGER");
         }
-        const type = this.types.get(name);
+        const eventType = this.types.get(name);
+
         this.callbacks.delete(name);
         this.types.delete(name);
-        this.client.removeAllListeners(type);
+        this.client.removeAllListeners(eventType);
+
         Array.from(this.callbacks.entries(), ([name, cb]) => {
-            if (this.types.get(name) == type) {
-                this.client.on(type, cb.bind(null));
+            if (this.types.get(name) == eventType && eventType) {
+                this.client.on(eventType, cb.bind(null));
             }
         });
     }
@@ -84,8 +86,10 @@ export class EventManager {
             return;
         }
         this.client.logger.info(`Reloading event ${name}`, "EVENTHANDLER");
-        const type = this.types.get(name);
+        const eventType = this.types.get(name);
         this.deleteEvent(name, false);
-        this.registerEvent(name, type, cb, false);
+        if (eventType) {
+            this.registerEvent(name, eventType, cb, false);
+        }
     }
 }
