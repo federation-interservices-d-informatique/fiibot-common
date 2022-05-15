@@ -1,5 +1,5 @@
 import { Worker } from "worker_threads";
-import { getDirname } from "../utils/dirname.js";
+import { getDirname } from "../utils/index.js";
 import { colorise, AnsiEscapesColors } from "../utils/colorise.js";
 
 /**

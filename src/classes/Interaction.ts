@@ -7,6 +7,7 @@ import {
     MessageContextMenuInteraction,
     UserContextMenuInteraction
 } from "discord.js";
+
 import { ApplicationCommandTypes } from "discord.js/typings/enums";
 import { interactionOptions } from "../lib";
 import { canSendEmbeds } from "../utils/Permissions.js";
@@ -37,6 +38,7 @@ export class BotInteraction {
     ) {
         this.client = client;
         this.appCommand = appCommand;
+        // Options doesn't exist on contextmenus
         if (
             this.appCommand.type === ApplicationCommandTypes.CHAT_INPUT ||
             this.appCommand.type === "CHAT_INPUT"
@@ -49,7 +51,12 @@ export class BotInteraction {
         this.data = data || new Map();
     }
 
-    hasPermission(inter: BaseCommandInteraction): boolean {
+    /**
+     * Check if **the user** has permission to use this command
+     * @param inter - The interaction
+     * @returns {boolean} Whetever the user has permission to use command
+     */
+    userHasPermission(inter: BaseCommandInteraction): boolean {
         if (!inter.channel || !inter.user) return false;
 
         if (inter.channel.type === "DM" && !this.extraOptions.ownerOnly) {
@@ -100,7 +107,13 @@ export class BotInteraction {
         }
         return true;
     }
-    hasBotPermission(inter: BaseCommandInteraction): boolean {
+
+    /**
+     * Check if **the bot** has all required permissions to handle interaction
+     * @param inter - The interaction
+     * @returns {boolean} Whetever the bot has permission to handle interaction
+     */
+    botHasPermission(inter: BaseCommandInteraction): boolean {
         if (!inter.channel || !inter.user || !inter.guild?.me) return false;
         if (inter.channel.type === "DM") return true;
         if (inter.isAutocomplete()) {
@@ -143,6 +156,10 @@ export class BotInteraction {
         return true;
     }
 
+    /**
+     * Handle interaction (call run*{InteractionType}*)
+     * @param inter The interaction
+     */
     async run(inter: Interaction): Promise<void> {
         // Commands / Base interacitons
         if (inter.isAutocomplete()) return this.runAutoComplete(inter);

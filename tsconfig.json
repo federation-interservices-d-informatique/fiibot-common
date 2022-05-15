@@ -17,5 +17,8 @@
         "module": "esnext",
         "esModuleInterop": true,
         "strict": true,
+        "incremental": true,
+        "removeComments": true,
+        "pretty": false,
     }
 }

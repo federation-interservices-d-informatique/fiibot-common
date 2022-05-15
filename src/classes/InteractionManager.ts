@@ -23,6 +23,9 @@ export class InteractionsManager {
         this.init();
     }
 
+    /**
+     * Load all interactions in this.
+     */
     public init = (): void => {
         const interactionFiles: string[] = [];
         this.settings.interactionsPath.forEach((path) => {
@@ -36,13 +39,17 @@ export class InteractionsManager {
             interactionFiles.push(...walkDir(path));
         });
 
-        // Wait for the client (and its application command) to be ready
+        // Wait for the client (and clientApplication) to be ready
         this.client.on("ready", async () => {
             this.loadInteractions(interactionFiles).then(() => {
                 this.client.logger.ok("Loaded all interactions", "LOADER");
             });
         });
     };
+    /**
+     * Load all command files into InteractionManager#interactions and update ClientApplication#commands
+     * @param files Command files to load
+     */
     loadInteractions = async (files: string[]): Promise<void> => {
         // Load interactions in this.interactions
         for (const file of files) {
@@ -52,6 +59,8 @@ export class InteractionsManager {
         if (!this.client.application?.commands) {
             throw new Error("Client application not ready!");
         }
+
+        // Fetch application command
         const interactionsList =
             (await this.client.application?.commands.fetch()) ||
             new Collection();
@@ -60,6 +69,7 @@ export class InteractionsManager {
             const interaction = interactionsList.filter(
                 (i) => i.name === inter.appCommand.name
             );
+            // Create the application command if it doesn't exist
             if (interaction.size === 0) {
                 this.client.logger.info(
                     `Creating interaction ${inter.appCommand.name}`,
@@ -69,6 +79,7 @@ export class InteractionsManager {
             } else {
                 const cmdInteraction = interaction.first();
                 if (!cmdInteraction) continue;
+                // Edit command if it has been modified
                 if (!cmdInteraction.equals(inter.appCommand)) {
                     this.client.logger.info(
                         `Editing command ${inter.appCommand.name}`,
@@ -81,6 +92,7 @@ export class InteractionsManager {
                 }
             }
         }
+        // Remove all deleted interaction from application commands
         interactionsList.forEach(async (cmd) => {
             if (!this.interactions.has(cmd.name)) {
                 this.client.logger.warn(
@@ -91,6 +103,11 @@ export class InteractionsManager {
             }
         });
     };
+
+    /**
+     * Load a single interaction file into this#interactions
+     * @param file The file
+     */
     loadInteraction = async (file: string): Promise<void> => {
         const imported = (await import(file)).default;
         const cmd: BotInteraction = new imported(this.client);
@@ -101,6 +118,10 @@ export class InteractionsManager {
         this.interactions.set(cmd.appCommand.name, cmd);
     };
 
+    /**
+     * Set this#client
+     * @param client Client
+     */
     public setClient = (client: fiiClient) => {
         this.client = client;
     };

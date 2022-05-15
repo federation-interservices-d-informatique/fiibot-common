@@ -6,6 +6,7 @@ import { Guild } from "discord.js";
 export const canSendEmbeds = (guild: Guild): boolean => {
     return guild.me ? guild.me.permissions.has("EMBED_LINKS") : false;
 };
+
 /**
  *  Checks if **the bot** can send messages in the guild.
  * This check is done by the Command#hasBotPermission if not overwritten.

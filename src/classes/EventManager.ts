@@ -63,6 +63,10 @@ export class EventManager {
 
         this.callbacks.delete(name);
         this.types.delete(name);
+        /* 
+            I don't know why, but it doesn't seems the client let us delete
+            a single listener, so we delete all listeners and re-add them if necessary
+        */
         this.client.removeAllListeners(eventType);
 
         Array.from(this.callbacks.entries(), ([name, cb]) => {
