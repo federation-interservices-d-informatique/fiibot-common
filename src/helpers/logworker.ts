@@ -14,8 +14,8 @@ const postHook = (msg: string): void => {
     /* eslint-disable-next-line */
     whclient.send(msg).catch(() => {});
 };
-// Should work in all cases, but TypeScript gives a warning so we add ?.
 
+// Should work in all cases, but TypeScript gives a warning so we add ?.
 parentPort?.on("message", (msg: string) => {
     parentPort?.postMessage(postHook(msg));
 });

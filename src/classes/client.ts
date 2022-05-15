@@ -1,8 +1,14 @@
-import { Client, ClientOptions, Interaction, UserResolvable } from "discord.js";
+import {
+    Client,
+    ClientOptions,
+    Interaction,
+    ThreadChannel,
+    UserResolvable
+} from "discord.js";
 import { fiiClientOptions } from "../lib.js";
 import { InteractionsManager } from "./InteractionManager.js";
 import { EventManager } from "./EventManager.js";
-import { fiiLogger } from "./logger.js";
+import { fiiLogger } from "./Logger.js";
 import { Pskv, PskvInitOptions } from "pskv";
 /**
  * FII extension of base Discord.JS client
@@ -27,7 +33,6 @@ export class fiiClient extends Client {
         this.logger = new fiiLogger();
 
         this.fiiSettings = opts;
-
         this.eventManager = new EventManager(this);
 
         // Setup interactionsManager
@@ -40,6 +45,8 @@ export class fiiClient extends Client {
             this.logger
                 .ok(`Connected as ${this.user?.tag} (${this.user?.id})`, "BOT")
                 .ok(`Present in ${this.guilds.cache.size} guilds`, "BOT");
+
+            // Join all unarchived threads found
             this.channels.cache.forEach(async (chan) => {
                 if (chan.isThread() && !chan.archived) {
                     this.logger.info(`Joined thread ${chan.name}`, "CLIENT");
@@ -48,42 +55,64 @@ export class fiiClient extends Client {
             });
         });
 
-        // Join newly created threads
+        // Join threads when they are created
         this.eventManager.registerEvent(
             "joinNewThreads",
             "threadCreate",
-            async (tc) => {
-                this.logger.info(`Joined thread ${tc.name}`, "CLIENT");
-                await tc.join();
+            async (threadChannel: ThreadChannel) => {
+                this.logger.info(
+                    `Joined thread ${threadChannel.name}`,
+                    "CLIENT"
+                );
+                await threadChannel.join();
             }
         );
+
+        // Handle application commands
         this.eventManager.registerEvent(
             "processAppCommand",
             "interactionCreate",
             async (inter: Interaction) => {
                 if (!inter.isApplicationCommand()) return;
-                // NOTE: I am not sure if a bot can trigger an interaction
-                if (inter.user.bot) return; //Stop if the author is a bot or a WebHook
+
+                /*
+                    Return if the user is a bot / a webhook
+                    NOTE: I don't think a bot can trigger an interaction but I kept this here as a safety measure
+                */
+                if (inter.user.bot) return;
+
                 const cmd = this.interactionManager.interactions.get(
-                    inter?.commandName
+                    inter.commandName
                 );
+
+                // Make sure interaction exists locally
                 if (!cmd) return;
-                if (!cmd.hasBotPermission(inter) || !cmd.hasPermission(inter))
+
+                // Make sure user/bot have all required permissions
+                if (
+                    !cmd.botHasPermission(inter) ||
+                    !cmd.userHasPermission(inter)
+                )
                     return;
+
                 try {
+                    // Run command
                     cmd.run(inter);
                 } catch (e) {
                     console.log(e);
                 }
             }
         );
+
         this.login(opts.token)
             .then(() => {
+                // Prepare interactionsManager
                 this.interactionManager.setClient(this);
             })
             .catch(console.log);
 
         if (postgresConfig) {
+            // Prepare database (pskv)
             this.logger.info("Initialising DB client", "CLIENT");
             this.dbclient = new Pskv(postgresConfig);
             this.dbclient.connect().then(() => {
@@ -91,6 +120,12 @@ export class fiiClient extends Client {
             });
         }
     }
+
+    /**
+     * Checks if a user is a bot owner
+     * @param user {UserResolvable} - User to check
+     * @returns {boolean} True if the user is an owner
+     */
     isOwner(user: UserResolvable): boolean {
         if (this.fiiSettings.owners.length === 0) {
             return false;

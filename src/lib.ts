@@ -1,9 +1,7 @@
 import { PermissionResolvable } from "discord.js";
-export * from "./classes/client.js";
-export * from "./classes/Interaction.js";
-export * from "./classes/EventManager.js";
-export * from "./classes/InteractionManager.js";
-export * from "./classes/logger.js";
+
+export * from "./classes/index.js";
+export * from "./utils/index.js";
 
 /**
  * fii Client options
@@ -22,6 +20,7 @@ export interface fiiClientOptions {
      */
     token: string;
 }
+
 /**
  * Command options
  */
@@ -45,5 +44,3 @@ export interface InteractionManagerSettings {
     /** Interaction files paths */
     interactionsPath: Array<string>;
 }
-
-export const VERSION = "3.1.0";

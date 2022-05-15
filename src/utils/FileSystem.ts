@@ -1,7 +1,17 @@
-import { readdirSync } from "fs";
-import { lstatSync } from "fs";
+import { readdirSync, lstatSync } from "fs";
+import { dirname } from "path";
+
 /**
- * Walk a dir recursivly
+ * Get the dirname of the file. Replacement of __dirname (not aviable with es6 modules)
+ * @returns {string} - The dirname
+ */
+export const getDirname = (): string => {
+    const mod_url = new URL(import.meta.url);
+    return dirname(mod_url.pathname);
+};
+
+/**
+ * Walk into a dir recursivly
  * @param {string[]} fpath The path to scan
  * @param {string[]} filter extensions filter. Ex: .js
  * @returns Path to files
