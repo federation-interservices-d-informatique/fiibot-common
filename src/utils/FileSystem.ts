@@ -3,10 +3,11 @@ import { dirname } from "path";
 
 /**
  * Get the dirname of the file. Replacement of __dirname (not aviable with es6 modules)
+ * @param {string} importUrl - Always `import.meta.url`
  * @returns {string} - The dirname
  */
-export const getDirname = (): string => {
-    const mod_url = new URL(import.meta.url);
+export const getDirname = (importUrl: string): string => {
+    const mod_url = new URL(importUrl);
     return dirname(mod_url.pathname);
 };
 
