@@ -1,5 +1,23 @@
 import { ClientEvents } from "discord.js";
+import { existsSync } from "fs";
+import {
+    EventsManagerSettings,
+    EventData,
+    UntypedEventData,
+    walkDir
+} from "../lib.js";
 import { fiiClient } from "./client.js";
+
+/**
+ * Just a small helper because export default can't be easily typed
+ * @param data Event's data
+ * @returns Same data
+ */
+export const clientEvent = <T extends keyof ClientEvents>(
+    data: EventData<T>
+): EventData<T> => {
+    return data;
+};
 
 /**
  * Event manager to reload and unload events
@@ -11,14 +29,39 @@ export class EventManager {
     client: fiiClient;
     /** Name => Event type */
     types: Map<string, keyof ClientEvents>;
+    /** Settings */
+    settings: EventsManagerSettings;
     /**
      * Create a new event manager without events
      */
-    constructor(client: fiiClient) {
+    constructor(client: fiiClient, settings: EventsManagerSettings) {
         this.client = client;
         this.callbacks = new Map();
         this.types = new Map();
+        this.settings = settings;
+        this.init();
     }
+
+    init = async (): Promise<void> => {
+        const eventFiles: string[] = [];
+        for (const path of this.settings.eventsPaths) {
+            if (!existsSync(path)) {
+                this.client.logger.error(
+                    `Can't scan ${path} for events: No such file or directory`,
+                    "EVENTHANDLER"
+                );
+                continue;
+            }
+            eventFiles.push(...walkDir(path));
+        }
+
+        for (const file of eventFiles) {
+            // Use an ntyped data because we can't guess event type
+            const fileData: UntypedEventData = (await import(file)).default;
+            this.registerEvent(fileData.name, fileData.type, fileData.callback);
+        }
+    };
+
     /**
      * Register a new event
      * @param name The event name

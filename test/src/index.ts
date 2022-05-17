@@ -1,16 +1,22 @@
-import { fiiClient } from "../../src/lib.js";
-import { config as envconfig } from "dotenv";
-import { dirname } from "path";
+import { fiiClient, getDirname } from "../../src/lib.js";
 import { Intents } from "discord.js";
-envconfig();
+(await import("dotenv")).config();
+
+const rootDir = getDirname(import.meta.url);
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const client = new fiiClient(
     {
         intents: new Intents(["GUILD_MESSAGES", "GUILDS"])
     },
     {
-        interactionsManagerSettings: {
-            interactionsPath: [`${dirname(import.meta.url.substr(7))}/commands`]
+        managersSettings: {
+            interactionsManagerSettings: {
+                interactionsPaths: [`${rootDir}/commands`]
+            },
+            eventsManagerSettings: {
+                eventsPaths: [`${rootDir}/events`]
+            }
         },
         token: process.env.BOT_TOKEN || ""
     }

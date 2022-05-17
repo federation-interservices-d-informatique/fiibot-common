@@ -1,4 +1,4 @@
-import { PermissionResolvable } from "discord.js";
+import { ClientEvents, PermissionResolvable } from "discord.js";
 
 export * from "./classes/index.js";
 export * from "./utils/index.js";
@@ -8,9 +8,9 @@ export * from "./utils/index.js";
  */
 export interface fiiClientOptions {
     /**
-     * Settings to pass to CommandManager
+     * Settings to pass to different managers
      */
-    interactionsManagerSettings: InteractionManagerSettings;
+    managersSettings: ManagersSettings;
     /**
      * Discord token
      */
@@ -34,9 +34,39 @@ export interface interactionOptions {
 }
 
 /**
- * CommandManager settings
+ * Settings for different managers
  */
-export interface InteractionManagerSettings {
-    /** Interaction files paths */
-    interactionsPath: Array<string>;
+export interface ManagersSettings {
+    /** InteractionsManager Settings */
+    interactionsManagerSettings: InteractionsManagerSettings;
+    /** EventsManager Settings */
+    eventsManagerSettings: EventsManagerSettings;
+}
+
+/**
+ * InteractionsManagers Settings
+ */
+export interface InteractionsManagerSettings {
+    /** Interaction paths */
+    interactionsPaths: Array<string>;
+}
+
+/**
+ * EventsManager Settings
+ */
+export interface EventsManagerSettings {
+    /** Events paths */
+    eventsPaths: Array<string>;
+}
+
+export interface UntypedEventData {
+    name: string;
+    type: keyof ClientEvents;
+    callback: (...args: unknown[]) => Promise<void>;
+}
+
+export interface EventData<T extends keyof ClientEvents> {
+    name: string;
+    type: T;
+    callback: (...args: ClientEvents[T]) => Promise<void>;
 }
