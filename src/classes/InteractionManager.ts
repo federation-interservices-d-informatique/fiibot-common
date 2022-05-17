@@ -2,7 +2,7 @@ import { InteractionsManagerSettings } from "../lib";
 import { fiiClient } from "./client.js";
 import { BotInteraction } from "./Interaction.js";
 import { existsSync } from "fs";
-import { walkDir } from "../utils/FileSystem.js";
+import { walkDir, getDirname } from "../utils/FileSystem.js";
 import { Collection } from "discord.js";
 
 /**
@@ -20,6 +20,7 @@ export class InteractionsManager {
         this.client = client;
         this.interactions = new Map();
         this.settings = settings;
+
         this.init();
     }
 
@@ -28,7 +29,15 @@ export class InteractionsManager {
      */
     public init = (): void => {
         const interactionFiles: string[] = [];
-        for (const path of this.settings.interactionsPaths) {
+        const { interactionsPaths } = this.settings;
+
+        if (this.settings.includeDefaultInteractions !== false) {
+            // Add the path at the start of the array to allow overriding interactions
+            interactionsPaths.unshift(
+                `${getDirname(import.meta.url)}/../defaultInteractions`
+            );
+        }
+        for (const path of interactionsPaths) {
             if (!existsSync(path)) {
                 this.client.logger.error(
                     `Can't scan path ${path} for interactions: Not such file or directory`,
