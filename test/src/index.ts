@@ -12,7 +12,8 @@ const client = new fiiClient(
     {
         managersSettings: {
             interactionsManagerSettings: {
-                interactionsPaths: [`${rootDir}/commands`]
+                interactionsPaths: [`${rootDir}/commands`],
+                includeDefaultInteractions: true
             },
             eventsManagerSettings: {
                 eventsPaths: [`${rootDir}/events`]

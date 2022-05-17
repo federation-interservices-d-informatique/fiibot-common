@@ -49,6 +49,8 @@ export interface ManagersSettings {
 export interface InteractionsManagerSettings {
     /** Interaction paths */
     interactionsPaths: Array<string>;
+    /** True to include default command interactions (ping, botinfo, ...) */
+    includeDefaultInteractions?: boolean;
 }
 
 /**
