@@ -34,12 +34,15 @@ export class fiiClient extends Client {
         this.logger = new fiiLogger();
 
         this.fiiSettings = opts;
-        this.eventManager = new EventManager(this);
+        this.eventManager = new EventManager(
+            this,
+            opts.managersSettings.eventsManagerSettings
+        );
 
         // Setup interactionsManager
         this.interactionManager = new InteractionsManager(
             this,
-            opts.interactionsManagerSettings
+            opts.managersSettings.interactionsManagerSettings
         );
 
         this.eventManager.registerEvent(

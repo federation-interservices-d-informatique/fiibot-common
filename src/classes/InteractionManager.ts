@@ -1,4 +1,4 @@
-import { InteractionManagerSettings } from "../lib";
+import { InteractionsManagerSettings } from "../lib";
 import { fiiClient } from "./client.js";
 import { BotInteraction } from "./Interaction.js";
 import { existsSync } from "fs";
@@ -14,9 +14,9 @@ export class InteractionsManager {
     /// Discord Client
     private client: fiiClient;
     /// Settings (commands path, ...)
-    public settings: InteractionManagerSettings;
+    public settings: InteractionsManagerSettings;
 
-    constructor(client: fiiClient, settings: InteractionManagerSettings) {
+    constructor(client: fiiClient, settings: InteractionsManagerSettings) {
         this.client = client;
         this.interactions = new Map();
         this.settings = settings;
@@ -28,16 +28,16 @@ export class InteractionsManager {
      */
     public init = (): void => {
         const interactionFiles: string[] = [];
-        this.settings.interactionsPath.forEach((path) => {
+        for (const path of this.settings.interactionsPaths) {
             if (!existsSync(path)) {
                 this.client.logger.error(
-                    `Can't scan path ${path}: Not such file or directory`,
+                    `Can't scan path ${path} for interactions: Not such file or directory`,
                     "Handler"
                 );
-                return;
+                continue;
             }
             interactionFiles.push(...walkDir(path));
-        });
+        }
 
         // Wait for the client (and clientApplication) to be ready
         this.client.on("ready", async () => {

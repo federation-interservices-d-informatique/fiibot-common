@@ -8,7 +8,9 @@ import { colorise, AnsiEscapesColors } from "../utils/colorise.js";
 export class fiiLogger {
     whworker: Worker;
     constructor() {
-        this.whworker = new Worker(`${getDirname()}/../helpers/logworker.js`);
+        this.whworker = new Worker(
+            `${getDirname(import.meta.url)}/../helpers/logworker.js`
+        );
     }
     /**
      * Formats a date for logging
