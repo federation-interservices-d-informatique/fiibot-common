@@ -1,14 +1,18 @@
 import { Worker } from "worker_threads";
-import { getDirname } from "../utils/index.js";
-import { colorise, AnsiEscapesColors } from "../utils/colorise.js";
+import {
+    getDirname,
+    colorise,
+    codeBlock,
+    AnsiEscapesColors
+} from "../utils/index.js";
 
 /**
  * Cool logger with colors for FIIClient and commands
  */
 export class fiiLogger {
-    whworker: Worker;
+    whWorker: Worker;
     constructor() {
-        this.whworker = new Worker(
+        this.whWorker = new Worker(
             `${getDirname(import.meta.url)}/../helpers/logworker.js`
         );
     }
@@ -22,20 +26,35 @@ export class fiiLogger {
     };
 
     /**
+     * Logs in both discord and console
+     * @param msg
+     * @param source
+     * @returns
+     */
+    private log = (
+        level: string,
+        color: keyof typeof AnsiEscapesColors,
+        msg: string,
+        source?: string
+    ): fiiLogger => {
+        const logline = colorise(
+            `${this.formatDate()} [${level.toUpperCase()}] ${
+                source ? `${source} ` : ""
+            }${msg}`,
+            color
+        );
+        console.log(logline);
+        this.whWorker.postMessage(codeBlock("ansi", logline));
+        return this;
+    };
+
+    /**
      * Write an info, in blue
      * @param {string} msg - Message to log. Ex: Eating potatoes
-     * @param {source} source - The source of the log. Ex: WOOMY
+     * @param {string} source - The source of the log. Ex: WOOMY
      */
     public info = (msg: string, source?: string): fiiLogger => {
-        let sourceline = " ";
-        if (source) {
-            sourceline = `(${source.toUpperCase()}) `;
-        }
-        const log = `${this.formatDate()} [INFO] ${sourceline}${msg}`;
-
-        this.whworker.postMessage(`\`\`\`markdown\n# ${log}\`\`\``);
-        console.log(colorise(log, AnsiEscapesColors.CYAN));
-        return this;
+        return this.log("INFO", "BLUE", msg, source);
     };
     /**
      * Write an error, in red
@@ -43,14 +62,7 @@ export class fiiLogger {
      * @param {string} source - The source of the log. Ex: WOOMY
      */
     public error = (msg: string, source?: string): fiiLogger => {
-        let sourceline = " ";
-        if (source) {
-            sourceline = `(${source.toUpperCase()}) `;
-        }
-        const log = `${this.formatDate()} [ERROR] ${sourceline}${msg}`;
-        this.whworker.postMessage(`\`\`\`diff\n- ${log}\`\`\``);
-        console.error(colorise(log, AnsiEscapesColors.RED));
-        return this;
+        return this.log("error", "RED", msg, source);
     };
     /**
      * Write a warn, in Yellow
@@ -58,15 +70,7 @@ export class fiiLogger {
      * @param {string} source - The source of the log. Ex: WOOMY
      */
     public warn = (msg: string, source?: string): fiiLogger => {
-        let sourceline = " ";
-        if (source) {
-            sourceline = `(${source.toUpperCase()}) `;
-        }
-        // This is not an error but this should appear on stderr
-        const log = `${this.formatDate()} [WARN] ${sourceline}${msg}`;
-        this.whworker.postMessage(`\`\`\`fix\n${log}\`\`\``);
-        console.error(colorise(log, AnsiEscapesColors.YELLOW));
-        return this;
+        return this.log("warn", "YELLOW", msg, source);
     };
     /**
      * Write an "ok", in green
@@ -74,13 +78,6 @@ export class fiiLogger {
      * @param {string} source - The source of the log. Ex: WOOMY
      */
     public ok = (msg: string, source?: string): fiiLogger => {
-        let sourceline = " ";
-        if (source) {
-            sourceline = `(${source.toUpperCase()}) `;
-        }
-        const log = `${this.formatDate()} [OK] ${sourceline}${msg}`;
-        this.whworker.postMessage(`\`\`\`diff\n+ ${log}\`\`\``);
-        console.log(colorise(log, AnsiEscapesColors.GREEN));
-        return this;
+        return this.log("ok", "GREEN", msg, source);
     };
 }
