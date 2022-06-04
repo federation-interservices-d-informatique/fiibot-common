@@ -2,14 +2,14 @@
  * List of ANSI escapes codes for colors
  */
 export enum AnsiEscapesColors {
-    BLACK = 90,
-    RED = 91,
-    GREEN = 92,
-    YELLOW = 93,
-    BLUE = 94,
-    MAGENTA = 95,
-    CYAN = 96,
-    WHITE = 97
+    BLACK = 30,
+    RED = 31,
+    GREEN = 32,
+    YELLOW = 33,
+    BLUE = 34,
+    MAGENTA = 35,
+    CYAN = 36,
+    WHITE = 37
 }
 /**
  * Prints a text in color
@@ -18,7 +18,7 @@ export enum AnsiEscapesColors {
  */
 export const colorise = (
     text: string,
-    color: number = AnsiEscapesColors.WHITE
+    color: keyof typeof AnsiEscapesColors = "WHITE"
 ): string => {
-    return `\x1b[${color}m${text}\x1b[m`;
+    return `\u001b[${AnsiEscapesColors[color]}m${text}\u001b[0m`;
 };
