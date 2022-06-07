@@ -6,32 +6,32 @@ import {
     User,
     UserResolvable
 } from "discord.js";
-import { fiiClientOptions } from "../lib.js";
+import { FiiClientOptions } from "../lib.js";
 import { InteractionsManager } from "./InteractionManager.js";
 import { EventManager } from "./EventManager.js";
-import { fiiLogger } from "./Logger.js";
+import { FiiLogger } from "./Logger.js";
 import { Pskv, PskvInitOptions } from "pskv";
 /**
  * FII extension of base Discord.JS client
  */
-export class fiiClient extends Client {
+export class FiiClient extends Client {
     /**
      *
      * @param {ClientOptions} djsopts - Discord.JS Options
-     * @param {fiiClientOptions} opts - Fii client options
+     * @param {FiiClientOptions} opts - Fii client options
      */
-    logger: fiiLogger;
+    logger: FiiLogger;
     interactionManager: InteractionsManager;
-    fiiSettings: fiiClientOptions;
+    fiiSettings: FiiClientOptions;
     eventManager: EventManager;
-    dbclient?: Pskv;
+    dbClient?: Pskv;
     constructor(
         djsopts: ClientOptions,
-        opts: fiiClientOptions,
+        opts: FiiClientOptions,
         postgresConfig?: PskvInitOptions
     ) {
         super(djsopts);
-        this.logger = new fiiLogger();
+        this.logger = new FiiLogger();
 
         this.fiiSettings = opts;
         this.eventManager = new EventManager(
@@ -87,34 +87,36 @@ export class fiiClient extends Client {
         this.eventManager.registerEvent(
             "processAppCommand",
             "interactionCreate",
-            async (inter: Interaction) => {
-                if (!inter.isApplicationCommand()) return;
+            async (interaction: Interaction) => {
+                if (!interaction.isApplicationCommand()) return;
 
                 /*
                     Return if the user is a bot / a webhook
                     NOTE: I don't think a bot can trigger an interaction but I kept this here as a safety measure
                 */
-                if (inter.user.bot) return;
+                if (interaction.user.bot) return;
 
-                const cmd = this.interactionManager.interactions.get(
-                    inter.commandName
+                const command = this.interactionManager.interactions.get(
+                    interaction.commandName
                 );
 
                 // Make sure interaction exists locally
-                if (!cmd) return;
+                if (!command) return;
 
                 // Make sure user/bot have all required permissions
                 if (
-                    !cmd.botHasPermission(inter) ||
-                    !cmd.userHasPermission(inter)
+                    !command.botHasPermission(interaction) ||
+                    !command.userHasPermission(interaction)
                 )
                     return;
 
                 try {
                     // Run command
-                    cmd.run(inter);
+                    await command.run(interaction);
                 } catch (e) {
-                    console.log(e);
+                    this.logger.error(
+                        `Error when running command ${command.appCommand.name}: ${e}`
+                    );
                 }
             }
         );
@@ -129,8 +131,8 @@ export class fiiClient extends Client {
         if (postgresConfig) {
             // Prepare database (pskv)
             this.logger.info("Initialising DB client", "CLIENT");
-            this.dbclient = new Pskv(postgresConfig);
-            this.dbclient.connect().then(() => {
+            this.dbClient = new Pskv(postgresConfig);
+            this.dbClient.connect().then(() => {
                 this.logger.ok("DB initialised!", "CLIENT");
             });
         }
@@ -150,9 +152,8 @@ export class fiiClient extends Client {
         if (!resolvedUser) {
             return false;
         }
-        /*
-        Support user-owned bot, even if FII bots are owned by a Team
-        */
+
+        // Supports user-owned bot, even if FII bots are owned by a Team
         if (this.application.owner instanceof User) {
             return this.application.owner.equals(resolvedUser);
         } else {

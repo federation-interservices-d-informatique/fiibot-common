@@ -9,7 +9,7 @@ import {
 /**
  * Cool logger with colors for FIIClient and commands
  */
-export class fiiLogger {
+export class FiiLogger {
     whWorker: Worker;
     constructor() {
         this.whWorker = new Worker(
@@ -20,9 +20,9 @@ export class fiiLogger {
      * Formats a date for logging
      * @returns {string} - The formatted date
      */
-    public formatDate = (): string => {
+    private formatDate = (): string => {
         const date = new Date();
-        return `[${date.toDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}]`;
+        return `[${date.toLocaleDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}]`;
     };
 
     /**
@@ -36,10 +36,10 @@ export class fiiLogger {
         color: keyof typeof AnsiEscapesColors,
         msg: string,
         source?: string
-    ): fiiLogger => {
+    ): this => {
         const logline = colorise(
             `${this.formatDate()} [${level.toUpperCase()}] ${
-                source ? `${source} ` : ""
+                source ? `(${source}) ` : ""
             }${msg}`,
             color
         );
@@ -53,31 +53,30 @@ export class fiiLogger {
      * @param {string} msg - Message to log. Ex: Eating potatoes
      * @param {string} source - The source of the log. Ex: WOOMY
      */
-    public info = (msg: string, source?: string): fiiLogger => {
-        return this.log("INFO", "BLUE", msg, source);
-    };
+    public info = (msg: string, source?: string): this =>
+        this.log("INFO", "BLUE", msg, source);
+
     /**
      * Write an error, in red
      * @param {string} msg - Message to log
      * @param {string} source - The source of the log. Ex: WOOMY
      */
-    public error = (msg: string, source?: string): fiiLogger => {
-        return this.log("error", "RED", msg, source);
-    };
+    public error = (msg: string, source?: string): this =>
+        this.log("error", "RED", msg, source);
+
     /**
      * Write a warn, in Yellow
      * @param {string} msg - Message to log
      * @param {string} source - The source of the log. Ex: WOOMY
      */
-    public warn = (msg: string, source?: string): fiiLogger => {
-        return this.log("warn", "YELLOW", msg, source);
-    };
+    public warn = (msg: string, source?: string): this =>
+        this.log("warn", "YELLOW", msg, source);
+
     /**
      * Write an "ok", in green
      * @param {string} msg - Message to log
      * @param {string} source - The source of the log. Ex: WOOMY
      */
-    public ok = (msg: string, source?: string): fiiLogger => {
-        return this.log("ok", "GREEN", msg, source);
-    };
+    public ok = (msg: string, source?: string): this =>
+        this.log("ok", "GREEN", msg, source);
 }
