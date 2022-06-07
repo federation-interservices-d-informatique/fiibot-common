@@ -1,23 +1,7 @@
 import { ClientEvents } from "discord.js";
 import { existsSync } from "fs";
-import {
-    EventsManagerSettings,
-    EventData,
-    UntypedEventData,
-    walkDir
-} from "../lib.js";
-import { fiiClient } from "./client.js";
-
-/**
- * Just a small helper because export default can't be easily typed
- * @param data Event's data
- * @returns Same data
- */
-export const clientEvent = <T extends keyof ClientEvents>(
-    data: EventData<T>
-): EventData<T> => {
-    return data;
-};
+import { EventsManagerSettings, UntypedEventData, walkDir } from "../lib.js";
+import { FiiClient } from "./FiiClient.js";
 
 /**
  * Event manager to reload and unload events
@@ -26,7 +10,7 @@ export class EventManager {
     /** Event callback store */ // eslint-disable-next-line
     callbacks: Map<string, (...args: any[]) => void>;
     /** Discord client */
-    client: fiiClient;
+    client: FiiClient;
     /** Name => Event type */
     types: Map<string, keyof ClientEvents>;
     /** Settings */
@@ -34,7 +18,7 @@ export class EventManager {
     /**
      * Create a new event manager without events
      */
-    constructor(client: fiiClient, settings: EventsManagerSettings) {
+    constructor(client: FiiClient, settings: EventsManagerSettings) {
         this.client = client;
         this.callbacks = new Map();
         this.types = new Map();

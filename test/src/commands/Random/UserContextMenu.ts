@@ -1,9 +1,9 @@
 import { UserContextMenuInteraction } from "discord.js";
-import { BotInteraction, fiiClient } from "../../../../src/lib.js";
+import { BotInteraction, FiiClient } from "../../../../src/lib.js";
 import { stripIndents } from "common-tags";
 
 export default class UserContextMenuTestInteraction extends BotInteraction {
-    constructor(client: fiiClient) {
+    constructor(client: FiiClient) {
         super(client, {
             name: "Informations de l'utilisateur",
             type: "USER"

@@ -4,9 +4,9 @@ export * from "./classes/index.js";
 export * from "./utils/index.js";
 
 /**
- * fii Client options
+ * FII Client options
  */
-export interface fiiClientOptions {
+export interface FiiClientOptions {
     /**
      * Settings to pass to different managers
      */
@@ -20,7 +20,7 @@ export interface fiiClientOptions {
 /**
  * Command options
  */
-export interface interactionOptions {
+export interface InteractionOptions {
     /** Set to true if the command can only be run in a guild */
     guildOnly?: boolean;
     /** Set to true if the command can be run by an owner  */
@@ -72,3 +72,12 @@ export interface EventData<T extends keyof ClientEvents> {
     type: T;
     callback: (...args: ClientEvents[T]) => Promise<void>;
 }
+
+/**
+ * Just a small helper because export default can't be easily typed
+ * @param data Event's data
+ * @returns Same data
+ */
+export const clientEvent = <T extends keyof ClientEvents>(
+    data: EventData<T>
+): EventData<T> => data;

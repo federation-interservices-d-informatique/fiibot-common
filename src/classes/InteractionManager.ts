@@ -1,8 +1,8 @@
 import { InteractionsManagerSettings } from "../lib";
-import { fiiClient } from "./client.js";
-import { BotInteraction } from "./Interaction.js";
+import { FiiClient } from "./FiiClient.js";
+import { BotInteraction } from "./BotInteraction.js";
 import { existsSync } from "fs";
-import { walkDir, getDirname } from "../utils/FileSystem.js";
+import { walkDir, getDirname } from "../utils/index.js";
 import { Collection } from "discord.js";
 
 /**
@@ -12,11 +12,11 @@ export class InteractionsManager {
     /// Interactions store
     public interactions: Map<string, BotInteraction>;
     /// Discord Client
-    private client: fiiClient;
+    private client: FiiClient;
     /// Settings (commands path, ...)
     public settings: InteractionsManagerSettings;
 
-    constructor(client: fiiClient, settings: InteractionsManagerSettings) {
+    constructor(client: FiiClient, settings: InteractionsManagerSettings) {
         this.client = client;
         this.interactions = new Map();
         this.settings = settings;
@@ -49,12 +49,13 @@ export class InteractionsManager {
         }
 
         // Wait for the client (and clientApplication) to be ready
-        this.client.on("ready", async () => {
+        this.client.on("ready", async (): Promise<void> => {
             this.loadInteractions(interactionFiles).then(() => {
                 this.client.logger.ok("Loaded all interactions", "LOADER");
             });
         });
     };
+
     /**
      * Load all command files into InteractionManager#interactions and update ClientApplication#commands
      * @param files Command files to load
@@ -131,7 +132,7 @@ export class InteractionsManager {
      * Set this#client
      * @param client Client
      */
-    public setClient = (client: fiiClient) => {
+    public setClient = (client: FiiClient) => {
         this.client = client;
     };
 }

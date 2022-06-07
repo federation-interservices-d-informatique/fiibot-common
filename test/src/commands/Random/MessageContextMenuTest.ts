@@ -1,9 +1,9 @@
 import { MessageContextMenuInteraction } from "discord.js";
-import { BotInteraction, fiiClient } from "../../../../src/lib.js";
+import { BotInteraction, FiiClient } from "../../../../src/lib.js";
 import { stripIndents } from "common-tags";
 
 export default class MessageContextMenuTestInteraction extends BotInteraction {
-    constructor(client: fiiClient) {
+    constructor(client: FiiClient) {
         super(client, {
             name: "Informations du message",
             type: "MESSAGE"

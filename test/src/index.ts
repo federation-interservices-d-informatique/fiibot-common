@@ -1,11 +1,11 @@
-import { fiiClient, getDirname } from "../../src/lib.js";
+import { FiiClient, getDirname } from "../../src/lib.js";
 import { Intents } from "discord.js";
 (await import("dotenv")).config();
 
 const rootDir = getDirname(import.meta.url);
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const client = new fiiClient(
+const client = new FiiClient(
     {
         intents: new Intents(["GUILD_MESSAGES", "GUILDS"])
     },

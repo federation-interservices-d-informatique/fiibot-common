@@ -1,7 +1,8 @@
 import { CommandInteraction } from "discord.js";
-import { BotInteraction, fiiClient } from "../lib.js";
+import { BotInteraction, FiiClient } from "../lib.js";
+
 export default class BotInfoInteraction extends BotInteraction {
-    constructor(client: fiiClient) {
+    constructor(client: FiiClient) {
         super(client, {
             name: "botinfo",
             description: "Obtenir les informations du bot"
