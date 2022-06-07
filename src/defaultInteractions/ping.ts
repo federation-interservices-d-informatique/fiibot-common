@@ -1,11 +1,11 @@
 import { CommandInteraction } from "discord.js";
-import { fiiClient, BotInteraction } from "../lib.js";
+import { FiiClient, BotInteraction } from "../lib.js";
 
 export default class PingInteraction extends BotInteraction {
-    constructor(client: fiiClient) {
+    constructor(client: FiiClient) {
         super(client, {
             name: "ping",
-            description: "Get bot ping!"
+            description: "Obtenir le ping du bot"
         });
     }
     async runCommand(inter: CommandInteraction): Promise<void> {

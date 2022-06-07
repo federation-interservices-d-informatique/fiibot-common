@@ -11,6 +11,7 @@ export enum AnsiEscapesColors {
     CYAN = 36,
     WHITE = 37
 }
+
 /**
  * Prints a text in color
  * @param text {string} - The text to print
@@ -19,6 +20,4 @@ export enum AnsiEscapesColors {
 export const colorise = (
     text: string,
     color: keyof typeof AnsiEscapesColors = "WHITE"
-): string => {
-    return `\u001b[${AnsiEscapesColors[color]}m${text}\u001b[0m`;
-};
+): string => `\u001b[${AnsiEscapesColors[color]}m${text}\u001b[0m`;

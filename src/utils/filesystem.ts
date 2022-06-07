@@ -6,10 +6,8 @@ import { dirname } from "path";
  * @param {string} importUrl - Always `import.meta.url`
  * @returns {string} - The dirname
  */
-export const getDirname = (importUrl: string): string => {
-    const mod_url = new URL(importUrl);
-    return dirname(mod_url.pathname);
-};
+export const getDirname = (importUrl: string): string =>
+    dirname(new URL(importUrl).pathname);
 
 /**
  * Walk into a dir recursivly

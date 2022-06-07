@@ -9,18 +9,18 @@ import {
 } from "discord.js";
 
 import { ApplicationCommandTypes } from "discord.js/typings/enums";
-import { interactionOptions } from "../lib";
-import { canSendEmbeds } from "../utils/Permissions.js";
-import { fiiClient } from "./client";
+import { InteractionOptions } from "../lib";
+import { canSendEmbeds } from "../utils/permissions.js";
+import { FiiClient } from "./FiiClient.js";
 
 /**
  * Base interaction
  */
 export class BotInteraction {
     /** Command options (name, description, ...) */
-    extraOptions: interactionOptions;
+    extraOptions: InteractionOptions;
     /** Discord client (we can also use message.client) */
-    client: fiiClient;
+    client: FiiClient;
     /** Command temp data */
     data: Map<string, string | unknown>;
     /** Data for applications command */
@@ -31,9 +31,9 @@ export class BotInteraction {
      * @param extraOptions - Command extra options
      */
     constructor(
-        client: fiiClient,
+        client: FiiClient,
         appCommand: ApplicationCommandData,
-        extraOptions?: interactionOptions,
+        extraOptions?: InteractionOptions,
         data?: Map<string, unknown>
     ) {
         this.client = client;
