@@ -10,7 +10,6 @@ import {
 
 import { ApplicationCommandTypes } from "discord.js/typings/enums";
 import { InteractionOptions } from "../lib";
-import { canSendEmbeds } from "../utils/permissions.js";
 import { FiiClient } from "./FiiClient.js";
 
 /**
@@ -117,7 +116,7 @@ export class BotInteraction {
         if (!inter.channel || !inter.user || !inter.guild?.me) return false;
         if (inter.channel.type === "DM") return true;
         if (inter.isAutocomplete()) {
-            return false;
+            return true;
         }
 
         const missing =
@@ -126,31 +125,21 @@ export class BotInteraction {
                 ?.missing(this.extraOptions.clientPermissions || []) || [];
 
         if (missing.length > 0) {
-            if (canSendEmbeds(inter.guild)) {
-                inter.reply({
-                    ephemeral: true,
-                    embeds: [
-                        {
-                            title: "Manque de permissions:",
-                            description: `Je ne peux pas exécuter la commande \`${
-                                this.appCommand.name
-                            }\` car elle requiert que j'aie les permissions suivantes: ${this.extraOptions.clientPermissions?.join(
-                                ","
-                            )}`,
-                            color: "RED"
-                        }
-                    ]
-                });
-            } else {
-                inter.reply({
-                    ephemeral: true,
-                    content: `Erreur: Je ne peux pas exécuter la commande \`${
-                        this.appCommand.name
-                    }\` car elle requiert que j'aie les permissions suivantes: ${this.extraOptions.clientPermissions?.join(
-                        ","
-                    )}`
-                });
-            }
+            inter.reply({
+                ephemeral: true,
+                embeds: [
+                    {
+                        title: "Manque de permissions:",
+                        description: `Je ne peux pas exécuter la commande \`${
+                            this.appCommand.name
+                        }\` car elle requiert que j'aie les permissions suivantes: ${this.extraOptions.clientPermissions?.join(
+                            ","
+                        )}`,
+                        color: "RED"
+                    }
+                ]
+            });
+
             return false;
         }
         return true;
