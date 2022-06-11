@@ -1,4 +1,5 @@
 import {
+    AutocompleteInteraction,
     Client,
     ClientOptions,
     Interaction,
@@ -88,7 +89,12 @@ export class FiiClient extends Client {
             "processAppCommand",
             "interactionCreate",
             async (interaction: Interaction) => {
-                if (!interaction.isApplicationCommand()) return;
+                if (
+                    !interaction.isChatInputCommand() &&
+                    !interaction.isContextMenuCommand() &&
+                    !(interaction instanceof AutocompleteInteraction)
+                )
+                    return;
 
                 /*
                     Return if the user is a bot / a webhook
@@ -107,9 +113,15 @@ export class FiiClient extends Client {
                 if (
                     !command.botHasPermission(interaction) ||
                     !command.userHasPermission(interaction)
-                )
+                ) {
+                    console.log(
+                        `bot: ${command.botHasPermission(
+                            interaction
+                        )} | user: ${command.userHasPermission(interaction)}`
+                    );
+                    console.log("no perms");
                     return;
-
+                }
                 try {
                     // Run command
                     await command.run(interaction);
@@ -126,7 +138,14 @@ export class FiiClient extends Client {
                 // Prepare interactionsManager
                 this.interactionManager.setClient(this);
             })
-            .catch(console.log);
+            .catch((e: Error) => {
+                this.logger.error(
+                    `FATAL: Can't login: ${e.name}: ${e.message} ${
+                        e.cause ? `(cause: ${e.cause})` : ""
+                    }`,
+                    "FIICLIENT"
+                );
+            });
 
         if (postgresConfig) {
             // Prepare database (pskv)

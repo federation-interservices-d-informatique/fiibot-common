@@ -3,7 +3,6 @@
  */
 import { colorise } from "./colorise";
 import { codeBlock } from "./format";
-import { getDirname, walkDir } from "./filesystem";
 
 /* Tests for colorise.ts */
 test("Colorise works", () => {
