@@ -1,4 +1,10 @@
-import { CommandInteraction } from "discord.js";
+import {
+    ButtonStyle,
+    ChatInputCommandInteraction,
+    Colors,
+    ComponentType,
+    OAuth2Scopes
+} from "discord.js";
 import { BotInteraction, FiiClient } from "../lib.js";
 
 export default class BotInfoInteraction extends BotInteraction {
@@ -9,7 +15,9 @@ export default class BotInfoInteraction extends BotInteraction {
         });
     }
 
-    async runCommand(inter: CommandInteraction): Promise<void> {
+    async runChatInputCommand(
+        inter: ChatInputCommandInteraction
+    ): Promise<void> {
         const uptime = this.client?.uptime || process.uptime() * 1000;
         const upDays = Math.floor(uptime / 86400000);
         const upHours = Math.floor(uptime / 3600000) % 24;
@@ -23,7 +31,7 @@ export default class BotInfoInteraction extends BotInteraction {
                     title: `Informations de ${
                         this.client.user?.username ?? "moi"
                     }`,
-                    color: "RANDOM",
+                    color: Colors.Blue,
                     fields: [
                         {
                             name: "Uptime",
@@ -47,32 +55,35 @@ export default class BotInfoInteraction extends BotInteraction {
             ],
             components: [
                 {
-                    type: "ACTION_ROW",
+                    type: ComponentType.ActionRow,
                     components: [
                         {
-                            type: "BUTTON",
-                            style: "LINK",
+                            type: ComponentType.Button,
+                            style: ButtonStyle.Link,
                             label: "GitHub",
                             emoji: "<:octocat:793998492787802142>",
                             url: "https://github.com/federation-interservices-d-informatique"
                         },
                         {
-                            type: "BUTTON",
-                            style: "LINK",
+                            type: ComponentType.Button,
+                            style: ButtonStyle.Link,
                             label: "License (MIT)",
                             emoji: "⚖️",
                             url: "https://github.com/federation-interservices-d-informatique/fiibot-common/blob/main/LICENSE"
                         },
                         {
-                            type: "BUTTON",
-                            style: "LINK",
+                            type: ComponentType.Button,
+                            style: ButtonStyle.Link,
                             label: "Invitation",
                             emoji: "📩",
                             url:
                                 this.client.application?.customInstallURL ??
                                 this.client.generateInvite({
-                                    scopes: ["applications.commands", "bot"],
-                                    permissions: ["ADMINISTRATOR"]
+                                    scopes: [
+                                        OAuth2Scopes.ApplicationsCommands,
+                                        OAuth2Scopes.Bot
+                                    ],
+                                    permissions: ["Administrator"]
                                 }),
                             // Disable invitations for non-owners if the bot is not public
                             disabled: this.client.application?.botPublic

@@ -1,4 +1,7 @@
-import { UserContextMenuInteraction } from "discord.js";
+import {
+    ApplicationCommandType,
+    UserContextMenuCommandInteraction
+} from "discord.js";
 import { BotInteraction, FiiClient } from "../../../../src/lib.js";
 import { stripIndents } from "common-tags";
 
@@ -6,14 +9,18 @@ export default class UserContextMenuTestInteraction extends BotInteraction {
     constructor(client: FiiClient) {
         super(client, {
             name: "Informations de l'utilisateur",
-            type: "USER"
+            type: ApplicationCommandType.User
         });
     }
 
-    async runUserContextMenu(inter: UserContextMenuInteraction): Promise<void> {
+    async runUserContextMenuCommand(
+        inter: UserContextMenuCommandInteraction
+    ): Promise<void> {
         const member = await inter.guild?.members.fetch(inter.targetId);
-        if (!member) return inter.reply("Invalid user!");
-
+        if (!member) {
+            inter.reply("Invalid user!");
+            return;
+        }
         inter.reply({
             content: stripIndents`
             ID: ${member.user.id}

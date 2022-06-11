@@ -1,14 +1,15 @@
 import {
     ApplicationCommandData,
+    ApplicationCommandType,
     AutocompleteInteraction,
-    BaseCommandInteraction,
-    CommandInteraction,
+    ChannelType,
+    ChatInputCommandInteraction,
+    Colors,
     Interaction,
-    MessageContextMenuInteraction,
-    UserContextMenuInteraction
+    MessageContextMenuCommandInteraction,
+    UserContextMenuCommandInteraction
 } from "discord.js";
 
-import { ApplicationCommandTypes } from "discord.js/typings/enums";
 import { InteractionOptions } from "../lib";
 import { FiiClient } from "./FiiClient.js";
 
@@ -38,10 +39,7 @@ export class BotInteraction {
         this.client = client;
         this.appCommand = appCommand;
         // Options doesn't exist on contextmenus
-        if (
-            this.appCommand.type === ApplicationCommandTypes.CHAT_INPUT ||
-            this.appCommand.type === "CHAT_INPUT"
-        ) {
+        if (this.appCommand.type === ApplicationCommandType.ChatInput) {
             if (!this.appCommand.options) {
                 this.appCommand.options = [];
             }
@@ -55,10 +53,13 @@ export class BotInteraction {
      * @param inter - The interaction
      * @returns {boolean} Whetever the user has permission to use command
      */
-    userHasPermission(inter: BaseCommandInteraction): boolean {
-        if (!inter.channel || !inter.user) return false;
+    userHasPermission(inter: Interaction): boolean {
+        if (!inter.user) return false;
 
-        if (inter.channel.type === "DM" && !this.extraOptions.ownerOnly) {
+        if (
+            (!inter.guildId || inter.channel?.type === ChannelType.DM) &&
+            !this.extraOptions.ownerOnly
+        ) {
             return true;
         }
         if (
@@ -72,35 +73,37 @@ export class BotInteraction {
             return true;
         }
         if (this.extraOptions.ownerOnly && !this.client.isOwner(inter.user)) {
-            inter.reply({
-                ephemeral: true,
-                content: `La commande \`${this.appCommand.name}\` ne peut être utilisée que par un owner du bot!`
-            });
+            if (inter.isRepliable())
+                inter.reply({
+                    ephemeral: true,
+                    content: `La commande \`${this.appCommand.name}\` ne peut être utilisée que par un owner du bot!`
+                });
             return false;
         }
-        if (this.extraOptions.guildOnly && inter.channel.type === "DM")
-            return false;
-        if (inter.channel.type !== "DM") {
+
+        if (inter.channel?.type !== ChannelType.DM && inter.channel) {
             const missing =
                 inter.channel
                     .permissionsFor(inter.user)
                     ?.missing(this.extraOptions.userPermissions || []) || [];
 
             if (missing.length > 0) {
-                inter.reply({
-                    ephemeral: true,
-                    embeds: [
-                        {
-                            title: "Manque de permissions:",
-                            description: `La commande ${
-                                this.appCommand.name
-                            } requiert les permissions suivantes: ${this.extraOptions.userPermissions?.join(
-                                ","
-                            )}`,
-                            color: "RED"
-                        }
-                    ]
-                });
+                if (inter.isRepliable())
+                    inter.reply({
+                        ephemeral: true,
+                        embeds: [
+                            {
+                                title: "Manque de permissions:",
+                                description: `La commande ${
+                                    this.appCommand.name
+                                } requiert les permissions suivantes: ${this.extraOptions.userPermissions?.join(
+                                    ","
+                                )}`,
+                                color: Colors.Red
+                            }
+                        ]
+                    });
+
                 return false;
             }
         }
@@ -112,33 +115,36 @@ export class BotInteraction {
      * @param inter - The interaction
      * @returns {boolean} Whetever the bot has permission to handle interaction
      */
-    botHasPermission(inter: BaseCommandInteraction): boolean {
-        if (!inter.channel || !inter.user || !inter.guild?.me) return false;
-        if (inter.channel.type === "DM") return true;
-        if (inter.isAutocomplete()) {
+    botHasPermission(inter: Interaction): boolean {
+        if (!inter.guildId || inter.channel?.type === ChannelType.DM)
+            return true;
+        if (!inter.channel || !inter.user || !inter.guild?.members.me)
+            return false;
+        if (inter instanceof AutocompleteInteraction) {
             return true;
         }
 
         const missing =
             inter.channel
-                .permissionsFor(inter.guild.me)
+                .permissionsFor(inter.guild.members?.me)
                 ?.missing(this.extraOptions.clientPermissions || []) || [];
 
         if (missing.length > 0) {
-            inter.reply({
-                ephemeral: true,
-                embeds: [
-                    {
-                        title: "Manque de permissions:",
-                        description: `Je ne peux pas exécuter la commande \`${
-                            this.appCommand.name
-                        }\` car elle requiert que j'aie les permissions suivantes: ${this.extraOptions.clientPermissions?.join(
-                            ","
-                        )}`,
-                        color: "RED"
-                    }
-                ]
-            });
+            if (inter.isRepliable())
+                inter.reply({
+                    ephemeral: true,
+                    embeds: [
+                        {
+                            title: "Manque de permissions:",
+                            description: `Je ne peux pas exécuter la commande \`${
+                                this.appCommand.name
+                            }\` car elle requiert que j'aie les permissions suivantes: ${this.extraOptions.clientPermissions?.join(
+                                ","
+                            )}`,
+                            color: Colors.Red
+                        }
+                    ]
+                });
 
             return false;
         }
@@ -151,13 +157,18 @@ export class BotInteraction {
      */
     async run(inter: Interaction): Promise<void> {
         // Commands / Base interacitons
-        if (inter.isAutocomplete()) return this.runAutoComplete(inter);
-        if (inter.isCommand()) return this.runCommand(inter);
+        if (inter instanceof AutocompleteInteraction)
+            return this.runAutoComplete(inter);
+        if (inter instanceof ChatInputCommandInteraction)
+            return this.runChatInputCommand(inter);
 
         // ContextMenu interactions
-        if (inter.isMessageContextMenu())
-            return this.runMessageContextMenu(inter);
-        if (inter.isUserContextMenu()) return this.runUserContextMenu(inter);
+        if (inter.isMessageContextMenuCommand())
+            return this.runMessageContextMenuCommand(inter);
+        if (inter.isUserContextMenuCommand())
+            return this.runUserContextMenuCommand(inter);
+
+        if (inter.isRepliable()) inter.reply("Unknown interaction type");
     }
 
     /**
@@ -172,27 +183,33 @@ export class BotInteraction {
      * Handles a CommandInteraction
      * @param inter {CommandInteraction} - The interaction
      */
-    async runCommand(inter: CommandInteraction): Promise<void> {
-        inter.reply("Run for CommandInteraction not implemented!");
+    async runChatInputCommand(
+        inter: ChatInputCommandInteraction
+    ): Promise<void> {
+        inter.reply("Run for ChatInputCommandInteraction not implemented!");
     }
 
     /**
-     * Handles a MessageContextMenuInteraction
-     * @param inter {MessageContextMenuInteraction} - The interaction
+     * Handles a MessageContextMenuCommandInteraction
+     * @param inter - The interaction
      */
-    async runMessageContextMenu(
-        inter: MessageContextMenuInteraction
+    async runMessageContextMenuCommand(
+        inter: MessageContextMenuCommandInteraction
     ): Promise<void> {
         inter.reply(
-            "Run for MessageContextMenuInteraction is not implemented!"
+            "Run for MessageContextMenuCommandInteraction is not implemented!"
         );
     }
 
     /**
-     * Handles a UserContextMenuInteraction
-     * @param inter {ContextMenuInteraction} - The interaction
+     * Handles a UserContextMenuCommandInteraction
+     * @param inter - The interaction
      */
-    async runUserContextMenu(inter: UserContextMenuInteraction): Promise<void> {
-        inter.reply("Run for UserContextMenuInteraction is not implemented!");
+    async runUserContextMenuCommand(
+        inter: UserContextMenuCommandInteraction
+    ): Promise<void> {
+        inter.reply(
+            "Run for UserContextMenuCommandInteraction is not implemented!"
+        );
     }
 }
