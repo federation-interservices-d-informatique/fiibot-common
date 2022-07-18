@@ -21,16 +21,10 @@ export interface FiiClientOptions {
  * Command options
  */
 export interface InteractionOptions {
-    /** Set to true if the command can only be run in a guild */
-    guildOnly?: boolean;
     /** Set to true if the command can be run by an owner  */
     ownerOnly?: boolean;
     /** List of permissions required by **the client** to run the command */
     clientPermissions?: Array<PermissionResolvable>;
-    /** List of permissions required by **the user (executor)** to run the command */
-    userPermissions?: Array<PermissionResolvable>;
-    /** Link to command docs */
-    doclink?: string;
 }
 
 /**
