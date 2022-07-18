@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "common-tags": "^1.8.2",
-    "discord.js": "^14.0.0-dev.1654949087-96053ba",
+    "discord.js": "^14.0.0-dev.1655381041-4df491c",
     "dotenv": "^16.0.1"
   }
 }

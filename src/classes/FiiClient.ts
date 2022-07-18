@@ -110,16 +110,12 @@ export class FiiClient extends Client {
                 if (!command) return;
 
                 // Make sure user/bot have all required permissions
-                if (
-                    !command.botHasPermission(interaction) ||
-                    !command.userHasPermission(interaction)
-                ) {
-                    console.log(
-                        `bot: ${command.botHasPermission(
-                            interaction
-                        )} | user: ${command.userHasPermission(interaction)}`
-                    );
-                    console.log("no perms");
+                if (!command.userHasPermission(interaction)) {
+                    if (interaction.isRepliable()) {
+                        interaction.reply(
+                            "Vous n'avez pas le permission d'exécuter cette commande!"
+                        );
+                    }
                     return;
                 }
                 try {

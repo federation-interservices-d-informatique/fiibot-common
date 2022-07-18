@@ -2,9 +2,7 @@ import {
     ApplicationCommandData,
     ApplicationCommandType,
     AutocompleteInteraction,
-    ChannelType,
     ChatInputCommandInteraction,
-    Colors,
     Interaction,
     MessageContextMenuCommandInteraction,
     UserContextMenuCommandInteraction
@@ -54,101 +52,9 @@ export class BotInteraction {
      * @returns {boolean} Whetever the user has permission to use command
      */
     userHasPermission(inter: Interaction): boolean {
-        if (!inter.user) return false;
-
-        if (
-            (!inter.guildId || inter.channel?.type === ChannelType.DM) &&
-            !this.extraOptions.ownerOnly
-        ) {
-            return true;
-        }
-        if (
-            !this.extraOptions.ownerOnly &&
-            (!this.extraOptions.userPermissions ||
-                this.extraOptions.userPermissions?.length === 0)
-        ) {
-            return true;
-        }
-        if (this.client.isOwner(inter.user)) {
-            return true;
-        }
-        if (this.extraOptions.ownerOnly && !this.client.isOwner(inter.user)) {
-            if (inter.isRepliable())
-                inter.reply({
-                    ephemeral: true,
-                    content: `La commande \`${this.appCommand.name}\` ne peut être utilisée que par un owner du bot!`
-                });
-            return false;
-        }
-
-        if (inter.channel?.type !== ChannelType.DM && inter.channel) {
-            const missing =
-                inter.channel
-                    .permissionsFor(inter.user)
-                    ?.missing(this.extraOptions.userPermissions || []) || [];
-
-            if (missing.length > 0) {
-                if (inter.isRepliable())
-                    inter.reply({
-                        ephemeral: true,
-                        embeds: [
-                            {
-                                title: "Manque de permissions:",
-                                description: `La commande ${
-                                    this.appCommand.name
-                                } requiert les permissions suivantes: ${this.extraOptions.userPermissions?.join(
-                                    ","
-                                )}`,
-                                color: Colors.Red
-                            }
-                        ]
-                    });
-
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Check if **the bot** has all required permissions to handle interaction
-     * @param inter - The interaction
-     * @returns {boolean} Whetever the bot has permission to handle interaction
-     */
-    botHasPermission(inter: Interaction): boolean {
-        if (!inter.guildId || inter.channel?.type === ChannelType.DM)
-            return true;
-        if (!inter.channel || !inter.user || !inter.guild?.members.me)
-            return false;
-        if (inter instanceof AutocompleteInteraction) {
-            return true;
-        }
-
-        const missing =
-            inter.channel
-                .permissionsFor(inter.guild.members?.me)
-                ?.missing(this.extraOptions.clientPermissions || []) || [];
-
-        if (missing.length > 0) {
-            if (inter.isRepliable())
-                inter.reply({
-                    ephemeral: true,
-                    embeds: [
-                        {
-                            title: "Manque de permissions:",
-                            description: `Je ne peux pas exécuter la commande \`${
-                                this.appCommand.name
-                            }\` car elle requiert que j'aie les permissions suivantes: ${this.extraOptions.clientPermissions?.join(
-                                ","
-                            )}`,
-                            color: Colors.Red
-                        }
-                    ]
-                });
-
-            return false;
-        }
-        return true;
+        return this.extraOptions.ownerOnly
+            ? this.client.isOwner(inter.user)
+            : true;
     }
 
     /**
