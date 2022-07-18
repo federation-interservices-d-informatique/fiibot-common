@@ -17,7 +17,7 @@ main(){
 	COMMITTYPES=()
 	for COMMIT in $COMMITS
 	do
-		COMMIT_DESC="$(git log --pretty --format="%B" -n 1 ${COMMIT})" # Get the description of the commit (NOTE: the -n1 option is required)
+		COMMIT_DESC="$(git log --pretty --format="%s" -n 1 ${COMMIT})" # Get the description of the commit (NOTE: the -n1 option is required)
 		if [[ $COMMIT_DESC =~ ^Merge* ]] || [[ $COMMIT_DESC =~ ^Project* ]]
 		then
 			continue; # We need to ignore merge commits and dependabot commits
