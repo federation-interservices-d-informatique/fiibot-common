@@ -34,7 +34,7 @@
         "typescript": "^4.7.3"
     },
     "dependencies": {
-        "discord.js": "^14.0.0-dev.1654949087-96053ba",
+        "discord.js": "^14.0.0-dev.1657022642-fd1c240",
         "pskv": "^1.1.0"
     }
 }
