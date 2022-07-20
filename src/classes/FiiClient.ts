@@ -18,8 +18,8 @@ import { Pskv, PskvInitOptions } from "pskv";
 export class FiiClient extends Client {
     /**
      *
-     * @param {ClientOptions} djsopts - Discord.JS Options
-     * @param {FiiClientOptions} opts - Fii client options
+     * @param djsopts - Discord.JS Options
+     * @param opts - Fii client options
      */
     logger: FiiLogger;
     interactionManager: InteractionsManager;
@@ -155,7 +155,7 @@ export class FiiClient extends Client {
 
     /**
      * Checks if a user is a bot owner
-     * @param user {UserResolvable} - User to check
+     * @param user - User to check
      * @returns {boolean} True if the user is an owner
      */
     isOwner(user: UserResolvable): boolean {

@@ -58,7 +58,7 @@ export class BotInteraction {
     }
 
     /**
-     * Handle interaction (call run*{InteractionType}*)
+     * Handle interaction (call runInteractionType)
      * @param inter The interaction
      */
     async run(inter: Interaction): Promise<void> {
@@ -79,7 +79,7 @@ export class BotInteraction {
 
     /**
      * Handles an AutoCompleteInteraction
-     * @param inter {AutoCompleteInteraction} - The interaction
+     * @param inter - The interaction
      */
     async runAutoComplete(inter: AutocompleteInteraction): Promise<void> {
         await inter.respond([]); // Just don't send suggestions because we can't reply
@@ -87,7 +87,7 @@ export class BotInteraction {
 
     /**
      * Handles a CommandInteraction
-     * @param inter {CommandInteraction} - The interaction
+     * @param inter - The interaction
      */
     async runChatInputCommand(
         inter: ChatInputCommandInteraction
