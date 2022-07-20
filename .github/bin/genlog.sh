@@ -1,3 +1,4 @@
 DIRNAME="$(dirname $0)"
 
-$DIRNAME/changelog.sh > changelog.txt
+$DIRNAME/changelog.sh > "${GITHUB_WORKSPACE}/changelog.txt"
+

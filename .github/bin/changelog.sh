@@ -18,7 +18,7 @@ main(){
 	for COMMIT in $COMMITS
 	do
 		COMMIT_DESC="$(git log --pretty --format="%s" -n 1 ${COMMIT})" # Get the description of the commit (NOTE: the -n1 option is required)
-		if [[ $COMMIT_DESC =~ ^Merge* ]] || [[ $COMMIT_DESC =~ ^Project* ]]
+		if [[ $COMMIT_DESC =~ ^Merge* ]] || [[ $COMMIT_DESC =~ ^Project* ]] || [[ $COMMIT_DESC =~ ^Version:* ]]
 		then
 			continue; # We need to ignore merge commits and dependabot commits
 		fi
