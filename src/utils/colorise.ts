@@ -14,10 +14,11 @@ export enum AnsiEscapesColors {
 
 /**
  * Prints a text in color
- * @param text {string} - The text to print
- * @param color {number} - The ANSI escape code
+ * @param text - The text to print
+ * @param color - The ANSI escape code
  */
 export const colorise = (
     text: string,
     color: keyof typeof AnsiEscapesColors = "WHITE"
 ): string => `\u001b[${AnsiEscapesColors[color]}m${text}\u001b[0m`;
+
