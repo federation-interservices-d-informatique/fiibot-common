@@ -57,7 +57,7 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          body_path: 'changelog.txt'
+          body_path: '${{ env.GITHUB_WORKSPACE }}/changelog.txt'
           token: ${{ secrets.GITHUB_TOKEN }}
   publish_package:
     needs: ["compile", "lint", "doc"]
