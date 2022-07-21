@@ -52,12 +52,13 @@ jobs:
           branch: gh-pages
           token: ${{ secrets.ACCESS_TOKEN }}
       - name: Gen changelog
-        run: bash .github/bin/genlog.sh
+        run: echo ::set-output name=log::$(bash .github/bin/changelog.sh)
+        id: changelog
       - name: Create release
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          body_path: /home/runner/changelog.txt
+          body: ${{ steps.changelog.outputs.log }}
           token: ${{ secrets.GITHUB_TOKEN }}
   publish_package:
     needs: ["compile", "lint", "doc"]
