@@ -10,9 +10,9 @@ jobs:
     # Excute eslint & prettier
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '18'
       - name: Install dependencies
@@ -23,9 +23,9 @@ jobs:
     # Compile with TSC
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '18'
       - name: Install dependencies
@@ -36,9 +36,9 @@ jobs:
     needs: ['compile', 'lint']
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '18'
       - name: Install dependencies
@@ -46,13 +46,12 @@ jobs:
       - name: Run docs
         run: npm run gendocs
       - name: Publish generated content to GitHub Pages
-        uses: tsunematsu21/actions-publish-gh-pages@v1.0.2
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          dir: docs/
-          branch: gh-pages
-          token: ${{ secrets.ACCESS_TOKEN }}
+          publish_dir: docs/
+          personal_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Gen changelog
-        run: echo ::set-output name=log::$(bash .github/bin/changelog.sh)
+        run: echo log=$(bash .github/bin/changelog.sh) >> "${GITHUB_OUTPUT}"
         id: changelog
       - name: Create release
         id: create_release
