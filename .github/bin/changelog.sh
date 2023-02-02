@@ -23,7 +23,7 @@ main(){
 		fi
 		COMMIT_TYPE="$(echo $COMMIT_DESC | awk -F ': ' '{ print $1 }')"
 		COMMIT_INFO="$(echo $COMMIT_DESC | awk -F ': ' '{ print $2 }')"
-		changelog[$COMMIT_TYPE]+="- ${COMMIT_INFO}\n"
+		changelog[$COMMIT_TYPE]+="- [${COMMIT}](https://github.com/${GITHUB_REPOSITORY}/commit/${COMMIT}): ${COMMIT_INFO}\n"
 	done
 	for ctype in "${!changelog[@]}"
 	do
