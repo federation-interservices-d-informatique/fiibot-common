@@ -14,7 +14,6 @@ main(){
 		exit 1
 	}
 	COMMITS="$(git log --pretty --format="%h" ${TAG}..HEAD)"
-	COMMITTYPES=()
 	for COMMIT in $COMMITS
 	do
 		COMMIT_DESC="$(git log --pretty --format="%s" -n 1 ${COMMIT})" # Get the description of the commit (NOTE: the -n1 option is required)
