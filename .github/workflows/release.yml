@@ -35,7 +35,7 @@ jobs:
         run: npm install
       - name: Build
         run: npm run build  
-  doc:
+  release:
     needs: ['compile', 'lint']
     runs-on: ubuntu-latest
     steps:
@@ -62,8 +62,8 @@ jobs:
         with:
           body_path: ${{ github.workspace }}/changelog.txt
           token: ${{ secrets.GITHUB_TOKEN }}
-  publish_package:
-    needs: ["compile", "lint", "doc"]
+  releasepkg:
+    needs: ["compile", "lint"]
     runs-on: ubuntu-latest
     permissions:
       contents: read
