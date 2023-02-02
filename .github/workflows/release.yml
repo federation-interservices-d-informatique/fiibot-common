@@ -1,9 +1,10 @@
 ---
-name: Build, test and lint
+name: Build, test and lint (+rleease)
 on:
   push: 
     tags:
       - '*'
+    branches: ['main']
   
 env:
   NODE_VERSION: 18
@@ -36,6 +37,7 @@ jobs:
       - name: Build
         run: npm run build  
   release:
+    if: startsWith(github.ref, 'refs/tags/')
     needs: ['compile', 'lint']
     runs-on: ubuntu-latest
     steps:
@@ -63,6 +65,7 @@ jobs:
           body_path: ${{ github.workspace }}/changelog.txt
           token: ${{ secrets.GITHUB_TOKEN }}
   releasepkg:
+    if: startsWith(github.ref, 'refs/tags/')
     needs: ["compile", "lint"]
     runs-on: ubuntu-latest
     permissions:
@@ -79,4 +82,3 @@ jobs:
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
