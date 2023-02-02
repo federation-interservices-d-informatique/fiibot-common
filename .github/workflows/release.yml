@@ -51,13 +51,12 @@ jobs:
           publish_dir: docs/
           personal_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Gen changelog
-        run: echo log=$(bash .github/bin/changelog.sh) >> "${GITHUB_OUTPUT}"
-        id: changelog
+        run: bash .github/bin/changelog.sh > "${GITHUB_WORKSPACE}/changelog.txt"
       - name: Create release
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          body: ${{ steps.changelog.outputs.log }}
+          body_path: ${{ github.workspace }}/changelog.txt
           token: ${{ secrets.GITHUB_TOKEN }}
   publish_package:
     needs: ["compile", "lint", "doc"]
