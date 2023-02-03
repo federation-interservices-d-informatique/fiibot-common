@@ -17,8 +17,7 @@
         "lint-fix": "eslint . -c .eslintrc.yml --fix",
         "format": "prettier 'src/**/*.ts' --write",
         "gendocs": "typedoc src/",
-        "prepublish": "tsc",
-        "prepublishOnly": "tsc"
+        "prepublishOnly": "npm run build"
     },
     "devDependencies": {
         "@types/jest": "^29.4.0",
