@@ -1,6 +1,6 @@
 {
     "name": "@federation-interservices-d-informatique/fiibot-common",
-    "version": "4.0.6",
+    "version": "4.0.7",
     "description": "Lib shared between FII bots",
     "main": "dist/lib.js",
     "typings": "dist/lib.d.ts",
