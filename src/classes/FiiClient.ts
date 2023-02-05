@@ -5,13 +5,15 @@ import {
     Interaction,
     ThreadChannel,
     User,
-    UserResolvable
+    UserResolvable,
+    Status
 } from "discord.js";
 import { FiiClientOptions } from "../lib.js";
 import { InteractionsManager } from "./InteractionManager.js";
 import { EventManager } from "./EventManager.js";
 import { FiiLogger } from "./Logger.js";
 import { Pskv, PskvInitOptions } from "pskv";
+import { createServer, Server } from "http";
 /**
  * FII extension of base Discord.JS client
  */
@@ -26,6 +28,7 @@ export class FiiClient extends Client {
     fiiSettings: FiiClientOptions;
     eventManager: EventManager;
     dbClient?: Pskv;
+    healthCheckServer: Server;
     constructor(
         djsopts: ClientOptions,
         opts: FiiClientOptions,
@@ -151,6 +154,28 @@ export class FiiClient extends Client {
                 this.logger.ok("DB initialised!", "CLIENT");
             });
         }
+
+        this.healthCheckServer = createServer();
+
+        this.healthCheckServer.on("request", (_, res) => {
+            let botHealthy = true;
+
+            if (this.ws.status !== Status.Ready) botHealthy = false;
+
+            res.statusCode = botHealthy ? 200 : 500;
+            res.write(botHealthy ? "ok" : "error");
+            res.end();
+        });
+
+        const hcPort = parseInt(process.env.HEALTHCHECK_PORT ?? "8080");
+        this.healthCheckServer.listen(
+            {
+                port: hcPort
+            },
+            () => {
+                this.logger.ok(`Listening on port ${hcPort}`, "HEALTHCHECK");
+            }
+        );
     }
 
     /**
