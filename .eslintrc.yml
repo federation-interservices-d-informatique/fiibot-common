@@ -1,5 +1,5 @@
 env:
-  es2022: true,
+  es2022: true
   node: true
 
 extends:
@@ -17,9 +17,6 @@ plugins:
   - prettier
 
 rules:
-  indent: 
-    - error
-    - 4
   linebreak-style: 
     - error
     - unix
