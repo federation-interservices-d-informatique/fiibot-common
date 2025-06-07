@@ -19,13 +19,16 @@
   "author": "FII Dev team & contributors",
   "license": "MIT",
   "devDependencies": {
-    "@types/common-tags": "^1.8.1",
-    "@types/node": "^20.5.3",
-    "typescript": "^5.1.6"
+    "@types/common-tags": "^1.8.4",
+    "@types/node": "^22.15.30",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
     "common-tags": "^1.8.2",
-    "discord.js": "^14.13.0",
-    "dotenv": "^16.3.1"
+    "discord.js": "^14.19.3",
+    "dotenv": "^16.5.0"
+  },
+  "scripts": {
+    "build": "tsc"
   }
 }
