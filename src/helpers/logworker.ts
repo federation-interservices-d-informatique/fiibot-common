@@ -11,7 +11,6 @@ const whClient = new WebhookClient(
 );
 
 const postHook = (msg: string): void => {
-    /* eslint-disable-next-line */
     whClient.send(msg).catch(() => {});
 };
 
