@@ -5,9 +5,6 @@
   "main": "dist/index.js",
   "type": "module",
   "module": "esnext",
-  "scripts": {
-    "test": "echo \"hello\""
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/federation-interservices-d-informatique"
