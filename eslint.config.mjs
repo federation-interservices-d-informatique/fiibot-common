@@ -8,7 +8,7 @@ export default tseslint.config(
     eslint.configs.recommended,
     tseslint.configs.strictTypeChecked,
     tseslint.configs.stylisticTypeChecked,
-    globalIgnores(["**/node_modules", "**/dist", "**/jest.config.js"]),
+    globalIgnores(["**/node_modules", "**/dist", "test/"]),
     {
         languageOptions: {
             parserOptions: {
