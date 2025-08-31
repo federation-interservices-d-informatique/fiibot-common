@@ -5,9 +5,9 @@ on:
     tags:
       - '*'
     branches: ['main']
-  
+
 env:
-  NODE_VERSION: 24
+  BUN_VERSION: latest
 
 jobs:
   lint:
@@ -15,27 +15,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          bun-version: ${{ env.BUN_VERSION }}
       - name: Install dependencies
-        run: npm ci
+        run: bun install
       - name: Lint
-        run: npm run lint
+        run: bun run lint
   compile:
     # Compile with TSC
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          bun-version: ${{ env.BUN_VERSION }}
       - name: Install dependencies
-        run: npm ci
+        run: bun install
       - name: Build
-        run: npm run build  
+        run: bun run build  
   release:
     if: startsWith(github.ref, 'refs/tags/')
     needs: ['compile', 'lint']
@@ -44,14 +42,13 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          bun-version: ${{ env.BUN_VERSION }}
       - name: Install dependencies
-        run: npm ci
+        run: bun install
       - name: Run docs
-        run: npm run gendocs
+        run: bun run gendocs
       - name: Publish generated content to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
@@ -73,12 +70,12 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          bun-version: ${{ env.BUN_VERSION }}
           registry-url: 'https://registry.npmjs.org'
           scope: '@federation-interservices-d-informatique'
-      - run: npm ci
-      - run: npm publish
+      - run: bun install
+      - run: bun publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
