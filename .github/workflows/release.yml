@@ -73,7 +73,6 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: ${{ env.BUN_VERSION }}
-          registries: '@federation-interservices-d-informatique:https://registry.npmjs.org'
       - run: bun install
       - run: bun publish
         env:
