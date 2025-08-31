@@ -51,7 +51,7 @@ export class FiiClient extends Client {
 
         this.eventManager.registerEvent(
             "loginfos",
-            "ready",
+            "clientReady",
             async (): Promise<void> => {
                 await this.application?.fetch();
                 this.logger

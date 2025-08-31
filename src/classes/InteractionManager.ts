@@ -48,7 +48,7 @@ export class InteractionsManager {
         }
 
         // Wait for the client (and clientApplication) to be ready
-        this.client.on("ready", async (): Promise<void> => {
+        this.client.on("clientReady", async (): Promise<void> => {
             this.loadInteractions(interactionFiles).then(() => {
                 this.client.logger.ok("Loaded all interactions", "LOADER");
             }).catch((_e: unknown) => {
