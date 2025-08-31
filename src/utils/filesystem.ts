@@ -11,21 +11,23 @@ export const getDirname = (importUrl: string): string =>
 
 /**
  * Walk into a dir recursivly
- * @param {string[]} fpath The path to scan
- * @param {string[]} filter extensions filter. Ex: .js
+ * @param {string} fpath The path to scan
+ * @param {boolean} filterAllow If true, the filter is an allow list
+ * @param {string} filter extensions filter. Ex: .js
  * @returns Path to files
  */
-export const walkDir = (fpath: string, filter?: string): string[] => {
+export const walkDir = (fpath: string, filterAllow = false, filter?: string): string[] => {
     const result: string[] = [];
     const files = readdirSync(fpath);
     files.forEach((file: string) => {
         if (
             !lstatSync(`${fpath}/${file}`).isDirectory() &&
-            file.endsWith(filter ?? ".ts")
+            /* if we use an allowlist, the file should end with filter */
+            filterAllow == file.endsWith(filter ?? ".d.ts")
         ) {
             result.push(`${fpath}/${file}`);
         } else if (lstatSync(`${fpath}/${file}`).isDirectory()) {
-            result.push(...walkDir(`${fpath}/${file}`));
+            result.push(...walkDir(`${fpath}/${file}`, filterAllow, filter));
         }
     });
     return result;
