@@ -3,8 +3,7 @@ import { FiiClient, getDirname } from "../../src/lib.js";
 
 const rootDir = getDirname(import.meta.url);
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const client = new FiiClient(
+new FiiClient(
     {
         intents: ["GuildMessages", "MessageContent", "Guilds"]
     },
@@ -18,6 +17,6 @@ const client = new FiiClient(
                 eventsPaths: [`${rootDir}/events`]
             }
         },
-        token: process.env.BOT_TOKEN || ""
+        token: process.env.BOT_TOKEN ?? ""
     }
 );

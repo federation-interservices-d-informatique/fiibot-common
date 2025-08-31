@@ -1,5 +1,6 @@
 import {
     ApplicationCommandType,
+    MessageFlags,
     UserContextMenuCommandInteraction
 } from "discord.js";
 import { BotInteraction, FiiClient } from "../../../../src/lib.js";
@@ -18,17 +19,17 @@ export default class UserContextMenuTestInteraction extends BotInteraction {
     ): Promise<void> {
         const member = await inter.guild?.members.fetch(inter.targetId);
         if (!member) {
-            inter.reply("Invalid user!");
+            await inter.reply("Invalid user!");
             return;
         }
-        inter.reply({
+        await inter.reply({
             content: stripIndents`
-            ID: ${member.user.id}
-            ${member.nickname ? `Surnom: ${member.nickname}` : ""} 
-            Nom:${member.user.username}#${member.user.discriminator}
-            isOwner: ${this.client.isOwner(member.user)}
+                ID: ${member.user.id}
+                ${member.nickname ? `Surnom: ${member.nickname}` : ""} 
+                Nom:${member.user.username}#${member.user.discriminator}
+                isOwner: ${this.client.isOwner(member.user)}
             `,
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         });
     }
 }

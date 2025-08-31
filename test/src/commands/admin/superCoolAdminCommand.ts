@@ -12,6 +12,6 @@ export default class SuperCoolAdminCommand extends BotInteraction {
     async runChatInputCommand(
         inter: ChatInputCommandInteraction
     ): Promise<void> {
-        inter.reply("U admin");
+        await inter.reply("U admin");
     }
 }

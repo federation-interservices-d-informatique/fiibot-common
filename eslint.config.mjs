@@ -1,57 +1,31 @@
-import { defineConfig, globalIgnores } from "eslint/config";
-import typescriptEslint from "@typescript-eslint/eslint-plugin";
-import prettier from "eslint-plugin-prettier";
-import globals from "globals";
-import tsParser from "@typescript-eslint/parser";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import js from "@eslint/js";
-import { FlatCompat } from "@eslint/eslintrc";
+// @ts-check
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all
-});
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
 
-export default defineConfig([
-    globalIgnores([
-        "**/node_modules",
-        "**/dist",
-        "**/jest.config.js",
-        "test/node_modules",
-        "test/dist",
-        "**/docs/"
-    ]),
+export default tseslint.config(
+    eslint.configs.recommended,
+    tseslint.configs.strictTypeChecked,
+    tseslint.configs.stylisticTypeChecked,
     {
-        extends: compat.extends(
-            "eslint:recommended",
-            "prettier",
-            "plugin:@typescript-eslint/recommended"
-        ),
-
-        plugins: {
-            "@typescript-eslint": typescriptEslint,
-            prettier
-        },
-
         languageOptions: {
-            globals: {
-                ...globals.node
-            },
-
-            parser: tsParser,
-            ecmaVersion: "latest",
-            sourceType: "module"
+            parserOptions: {
+                projectService: {
+                    allowDefaultProject: ['eslint.config.mjs'],
+                    defaultProject: './tsconfig.json'
+                },
+                tsconfigRootDir: import.meta.dirname
+            }
         },
-
         rules: {
-            "linebreak-style": ["error", "unix"],
-            quotes: ["error", "double"],
-            semi: ["error", "always"],
-            "prettier/prettier": 1
+            "@typescript-eslint/no-unused-vars":
+                ["error", {
+                    varsIgnorePattern: "^_",
+                    argsIgnorePattern: "^_"
+                }],
+            "@typescript-eslint/require-await": "off",
+            "@typescript-eslint/no-deprecated": "error",
+            "@typescript-eslint/no-misused-promises": "off"
         }
     }
-]);
+)

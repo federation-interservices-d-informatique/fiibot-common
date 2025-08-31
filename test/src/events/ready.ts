@@ -4,7 +4,7 @@ export default clientEvent({
     name: "setPresence",
     type: "ready",
     callback: async (client: Client) => {
-        await client.user?.setActivity({
+        client.user?.setActivity({
             name: "Faire des choses"
         });
     }

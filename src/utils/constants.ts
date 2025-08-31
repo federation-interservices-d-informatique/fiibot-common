@@ -26,7 +26,7 @@ export type ServerCodenamesKey = keyof typeof SERVER_CODENAMES;
 export const SERVERS_LIST = [
     "706283053160464395", // HUB
     "456901919344951298", // CLI
-    "622831434427662346", // LPT
+    "622831434427662346" // LPT
 ];
 
 /**

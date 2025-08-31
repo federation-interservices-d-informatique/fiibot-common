@@ -19,5 +19,5 @@ export enum AnsiEscapesColors {
  */
 export const colorise = (
     text: string,
-    color: keyof typeof AnsiEscapesColors = "WHITE"
-): string => `\u001b[${AnsiEscapesColors[color]}m${text}\u001b[0m`;
+    color: AnsiEscapesColors
+): string => `\u001b[${color.toString()}m${text}\u001b[0m`;

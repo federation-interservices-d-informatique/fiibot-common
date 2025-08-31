@@ -22,7 +22,7 @@ export class FiiLogger {
      */
     private formatDate = (): string => {
         const date = new Date();
-        return `[${date.toLocaleDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}]`;
+        return `[${date.toLocaleDateString()} ${date.getHours().toString()}:${date.getMinutes().toString()}:${date.getSeconds().toString()}]`;
     };
 
     /**
@@ -33,7 +33,7 @@ export class FiiLogger {
      */
     private log = (
         level: string,
-        color: keyof typeof AnsiEscapesColors,
+        color: AnsiEscapesColors,
         msg: string,
         source?: string
     ): this => {
@@ -54,7 +54,7 @@ export class FiiLogger {
      * @param {string} source - The source of the log. Ex: WOOMY
      */
     public info = (msg: string, source?: string): this =>
-        this.log("INFO", "BLUE", msg, source);
+        this.log("INFO", AnsiEscapesColors.BLUE, msg, source);
 
     /**
      * Write an error, in red
@@ -62,7 +62,7 @@ export class FiiLogger {
      * @param {string} source - The source of the log. Ex: WOOMY
      */
     public error = (msg: string, source?: string): this =>
-        this.log("error", "RED", msg, source);
+        this.log("error", AnsiEscapesColors.RED, msg, source);
 
     /**
      * Write a warn, in Yellow
@@ -70,7 +70,7 @@ export class FiiLogger {
      * @param {string} source - The source of the log. Ex: WOOMY
      */
     public warn = (msg: string, source?: string): this =>
-        this.log("warn", "YELLOW", msg, source);
+        this.log("warn", AnsiEscapesColors.YELLOW, msg, source);
 
     /**
      * Write an "ok", in green
@@ -78,5 +78,5 @@ export class FiiLogger {
      * @param {string} source - The source of the log. Ex: WOOMY
      */
     public ok = (msg: string, source?: string): this =>
-        this.log("ok", "GREEN", msg, source);
+        this.log("ok", AnsiEscapesColors.GREEN, msg, source);
 }

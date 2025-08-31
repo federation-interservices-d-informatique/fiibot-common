@@ -24,7 +24,7 @@ export interface InteractionOptions {
     /** Set to true if the command can be run by an owner  */
     ownerOnly?: boolean;
     /** List of permissions required by **the client** to run the command */
-    clientPermissions?: Array<PermissionResolvable>;
+    clientPermissions?: PermissionResolvable[];
 }
 
 /**
@@ -42,7 +42,7 @@ export interface ManagersSettings {
  */
 export interface InteractionsManagerSettings {
     /** Interaction paths */
-    interactionsPaths: Array<string>;
+    interactionsPaths: string[];
     /** True to include default command interactions (ping, botinfo, ...) */
     includeDefaultInteractions?: boolean;
 }
@@ -52,7 +52,7 @@ export interface InteractionsManagerSettings {
  */
 export interface EventsManagerSettings {
     /** Events paths */
-    eventsPaths: Array<string>;
+    eventsPaths: string[];
 }
 
 export interface UntypedEventData {

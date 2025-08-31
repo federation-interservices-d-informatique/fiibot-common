@@ -1,6 +1,7 @@
 import {
     ApplicationCommandType,
-    MessageContextMenuCommandInteraction
+    MessageContextMenuCommandInteraction,
+    MessageFlags
 } from "discord.js";
 import { BotInteraction, FiiClient } from "../../../../src/lib.js";
 import { stripIndents } from "common-tags";
@@ -17,14 +18,14 @@ export default class MessageContextMenuTestInteraction extends BotInteraction {
         inter: MessageContextMenuCommandInteraction
     ): Promise<void> {
         const msg = inter.targetMessage;
-        inter.reply({
+        await inter.reply({
             content: stripIndents`
             ID: ${msg.id}
             Auteur: ${msg.author.username}#${msg.author.discriminator} (${msg.author.id})
             Contenu: ${msg.content}
         `,
             embeds: msg.embeds,
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         });
     }
 }

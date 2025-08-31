@@ -56,13 +56,13 @@ export class FiiClient extends Client {
                 await this.application?.fetch();
                 this.logger
                     .ok(
-                        `Connected as ${this.user?.tag} (${this.user?.id})`,
+                        `Connected as ${this.user?.username ?? "i"} (${this.user?.id.toString() ?? ""})`,
                         "BOT"
                     )
-                    .ok(`Present in ${this.guilds.cache.size} guilds`, "BOT");
+                    .ok(`Present in ${this.guilds.cache.size.toString()} guilds`, "BOT");
 
                 // Join all unarchived threads found
-                this.channels.cache.forEach(async (chan) => {
+                for (const [_, chan] of this.channels.cache) {
                     if (chan.isThread() && !chan.archived) {
                         this.logger.info(
                             `Joined thread ${chan.name}`,
@@ -70,7 +70,7 @@ export class FiiClient extends Client {
                         );
                         await chan.join();
                     }
-                });
+                };
             }
         );
 
@@ -115,7 +115,7 @@ export class FiiClient extends Client {
                 // Make sure user/bot have all required permissions
                 if (!command.userHasPermission(interaction)) {
                     if (interaction.isRepliable()) {
-                        interaction.reply(
+                        await interaction.reply(
                             "Vous n'avez pas le permission d'exécuter cette commande!"
                         );
                     }
@@ -124,10 +124,11 @@ export class FiiClient extends Client {
                 try {
                     // Run command
                     await command.run(interaction);
-                } catch (e) {
-                    this.logger.error(
-                        `Error when running command ${command.appCommand.name}: ${e}`
-                    );
+                } catch (e: unknown) {
+                    if (e instanceof Error)
+                        this.logger.error(
+                            `Error when running command ${command.appCommand.name}: ${e.toString()}`
+                        );
                 }
             }
         );
@@ -137,13 +138,12 @@ export class FiiClient extends Client {
                 // Prepare interactionsManager
                 this.interactionManager.setClient(this);
             })
-            .catch((e: Error) => {
-                this.logger.error(
-                    `FATAL: Can't login: ${e.name}: ${e.message} ${
-                        e.cause ? `(cause: ${e.cause})` : ""
-                    }`,
-                    "FIICLIENT"
-                );
+            .catch((e: unknown) => {
+                if (e instanceof Error)
+                    this.logger.error(
+                        `FATAL: Can't login: ${e.toString()}`,
+                        "FIICLIENT"
+                    );
             });
 
         if (postgresConfig) {
@@ -152,6 +152,9 @@ export class FiiClient extends Client {
             this.dbClient = new Pskv(postgresConfig);
             this.dbClient.connect().then(() => {
                 this.logger.ok("DB initialised!", "CLIENT");
+            }).catch((e: unknown) => {
+                if (e instanceof Error)
+                    this.logger.error(`Can't connect to db: ${e.toString()}`, "CLIENT");
             });
         }
 
@@ -173,7 +176,7 @@ export class FiiClient extends Client {
                 port: hcPort
             },
             () => {
-                this.logger.ok(`Listening on port ${hcPort}`, "HEALTHCHECK");
+                this.logger.ok(`Listening on port ${hcPort.toString()}`, "HEALTHCHECK");
             }
         );
     }

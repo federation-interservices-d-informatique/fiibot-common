@@ -17,7 +17,7 @@ export default class PingInteraction extends BotInteraction {
         await inter.editReply(
             `${
                 Date.now() - base < 250 ? "🟢" : 500 < Date.now() ? "🔴" : "🟡"
-            } Pong 🏓 en ${Date.now() - base}ms`
+            } Pong 🏓 en ${(Date.now() - base).toString()}ms`
         );
     }
 }

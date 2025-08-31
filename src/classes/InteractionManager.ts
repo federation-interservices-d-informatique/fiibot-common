@@ -3,7 +3,6 @@ import { FiiClient } from "./FiiClient.js";
 import { BotInteraction } from "./BotInteraction.js";
 import { existsSync } from "fs";
 import { walkDir, getDirname } from "../utils/index.js";
-import { Collection } from "discord.js";
 
 /**
  * Interactions + paths store
@@ -52,6 +51,8 @@ export class InteractionsManager {
         this.client.on("ready", async (): Promise<void> => {
             this.loadInteractions(interactionFiles).then(() => {
                 this.client.logger.ok("Loaded all interactions", "LOADER");
+            }).catch((_e: unknown) => {
+                this.client.logger.error("Can't load interactions", "LOADER");
             });
         });
     };
@@ -63,7 +64,7 @@ export class InteractionsManager {
     loadInteractions = async (files: string[]): Promise<void> => {
         // Load interactions in this.interactions
         for (const file of files) {
-            this.loadInteraction(file);
+            await this.loadInteraction(file);
         }
 
         if (!this.client.application?.commands) {
@@ -71,9 +72,7 @@ export class InteractionsManager {
         }
 
         // Fetch application command
-        const interactionsList =
-            (await this.client.application?.commands.fetch()) ||
-            new Collection();
+        const interactionsList = await this.client.application.commands.fetch();
 
         for (const inter of this.interactions.values()) {
             const interaction = interactionsList.filter(
@@ -85,7 +84,7 @@ export class InteractionsManager {
                     `Creating interaction ${inter.appCommand.name}`,
                     "LOADER"
                 );
-                this.client.application?.commands.create(inter.appCommand);
+                await this.client.application.commands.create(inter.appCommand);
             } else {
                 const cmdInteraction = interaction.first();
                 if (!cmdInteraction) continue;
@@ -95,7 +94,7 @@ export class InteractionsManager {
                         `Editing command ${inter.appCommand.name}`,
                         "LOADER"
                     );
-                    this.client.application?.commands.edit(
+                    await this.client.application.commands.edit(
                         cmdInteraction.id,
                         inter.appCommand
                     );
@@ -103,15 +102,15 @@ export class InteractionsManager {
             }
         }
         // Remove all deleted interaction from application commands
-        interactionsList.forEach(async (cmd) => {
-            if (!this.interactions.has(cmd.name)) {
+        for (const [_, interaction] of interactionsList) {
+            if (!this.interactions.has(interaction.name)) {
                 this.client.logger.warn(
-                    `Found deleted interaction ${cmd.name}, removing if from application`,
+                    `Found deleted interaction ${interaction.name}, removing if from application`,
                     "LOADER"
                 );
-                await this.client.application?.commands.delete(cmd.id);
+                await this.client.application.commands.delete(interaction.id);
             }
-        });
+        };
     };
 
     /**
@@ -119,7 +118,9 @@ export class InteractionsManager {
      * @param file The file
      */
     loadInteraction = async (file: string): Promise<void> => {
+        /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
         const imported = (await import(file)).default;
+        /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call */
         const cmd: BotInteraction = new imported(this.client);
         this.client.logger.info(
             `Loading interaction ${cmd.appCommand.name}`,

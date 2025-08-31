@@ -23,7 +23,7 @@ export class EventManager {
         this.callbacks = new Map();
         this.types = new Map();
         this.settings = settings;
-        this.init();
+        void this.init();
     }
 
     init = async (): Promise<void> => {
@@ -41,6 +41,7 @@ export class EventManager {
 
         for (const file of eventFiles) {
             // Use an ntyped data because we can't guess event type
+            /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
             const fileData: UntypedEventData = (await import(file)).default;
             this.registerEvent(fileData.name, fileData.type, fileData.callback);
         }
@@ -57,7 +58,7 @@ export class EventManager {
         name: string,
         event: keyof ClientEvents,
         // eslint-disable-next-line
-        cb: (...args: any[]) => void,
+        cb: (...args: any[]) => Promise<void>,
         log = true
     ): void => {
         if (log) {
@@ -108,7 +109,7 @@ export class EventManager {
      * @param cb The new callback
      */
     // eslint-disable-next-line
-    setCallback(name: string, cb: (...args: any[]) => void): void {
+    setCallback(name: string, cb: (...args: any[]) => Promise<void>): void {
         if (!this.callbacks.has(name) || !this.types.has(name)) {
             this.client.logger.error(
                 `Can't modify event ${name}: not found`,

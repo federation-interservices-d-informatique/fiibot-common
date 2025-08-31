@@ -20,7 +20,7 @@ export class BotInteraction {
     /** Discord client (we can also use message.client) */
     client: FiiClient;
     /** Command temp data */
-    data: Map<string, string | unknown>;
+    data: Map<string, unknown>;
     /** Data for applications command */
     appCommand: ApplicationCommandData;
     /**
@@ -38,12 +38,10 @@ export class BotInteraction {
         this.appCommand = appCommand;
         // Options doesn't exist on contextmenus
         if (this.appCommand.type === ApplicationCommandType.ChatInput) {
-            if (!this.appCommand.options) {
-                this.appCommand.options = [];
-            }
+            this.appCommand.options ??= [];
         }
-        this.extraOptions = extraOptions || {};
-        this.data = data || new Map();
+        this.extraOptions = extraOptions ?? {};
+        this.data = data ?? new Map<string, unknown>();
     }
 
     /**
@@ -74,7 +72,7 @@ export class BotInteraction {
         if (inter.isUserContextMenuCommand())
             return this.runUserContextMenuCommand(inter);
 
-        if (inter.isRepliable()) inter.reply("Unknown interaction type");
+        if (inter.isRepliable()) await inter.reply("Unknown interaction type");
     }
 
     /**
@@ -92,7 +90,7 @@ export class BotInteraction {
     async runChatInputCommand(
         inter: ChatInputCommandInteraction
     ): Promise<void> {
-        inter.reply("Run for ChatInputCommandInteraction not implemented!");
+        await inter.reply("Run for ChatInputCommandInteraction not implemented!");
     }
 
     /**
@@ -102,7 +100,7 @@ export class BotInteraction {
     async runMessageContextMenuCommand(
         inter: MessageContextMenuCommandInteraction
     ): Promise<void> {
-        inter.reply(
+        await inter.reply(
             "Run for MessageContextMenuCommandInteraction is not implemented!"
         );
     }
@@ -114,7 +112,7 @@ export class BotInteraction {
     async runUserContextMenuCommand(
         inter: UserContextMenuCommandInteraction
     ): Promise<void> {
-        inter.reply(
+        await inter.reply(
             "Run for UserContextMenuCommandInteraction is not implemented!"
         );
     }

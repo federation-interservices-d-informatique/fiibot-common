@@ -3,6 +3,7 @@ import {
     ChatInputCommandInteraction,
     Colors,
     ComponentType,
+    MessageFlags,
     OAuth2Scopes
 } from "discord.js";
 import { BotInteraction, FiiClient } from "../lib.js";
@@ -18,14 +19,14 @@ export default class BotInfoInteraction extends BotInteraction {
     async runChatInputCommand(
         inter: ChatInputCommandInteraction
     ): Promise<void> {
-        const uptime = this.client?.uptime || process.uptime() * 1000;
-        const upDays = Math.floor(uptime / 86400000);
-        const upHours = Math.floor(uptime / 3600000) % 24;
-        const upMins = Math.floor(uptime / 60000) % 60;
-        const upSeconds = Math.floor(uptime / 1000) % 60;
+        const uptime = this.client.uptime ?? process.uptime() * 1000;
+        const upDays = Math.floor(uptime / 86400000).toString();
+        const upHours = (Math.floor(uptime / 3600000) % 24).toString();
+        const upMins = (Math.floor(uptime / 60000) % 60).toString();
+        const upSeconds = (Math.floor(uptime / 1000) % 60).toString();
 
-        inter.reply({
-            ephemeral: true,
+        await inter.reply({
+            flags: MessageFlags.Ephemeral,
             embeds: [
                 {
                     title: `Informations de ${
@@ -36,13 +37,13 @@ export default class BotInfoInteraction extends BotInteraction {
                         {
                             name: "Uptime",
                             value: `${upDays} jour${
-                                upDays !== 1 ? "s" : ""
+                                upDays !== "1" ? "s" : ""
                             }, ${upHours} heure${
-                                upHours !== 1 ? "s" : ""
+                                upHours !== "1" ? "s" : ""
                             }, ${upMins} minute${
-                                upMins !== 1 ? "s" : ""
+                                upMins !== "1" ? "s" : ""
                             } et ${upSeconds} seconde${
-                                upSeconds !== 1 ? "s" : ""
+                                upSeconds !== "1" ? "s" : ""
                             }`
                         },
                         {
