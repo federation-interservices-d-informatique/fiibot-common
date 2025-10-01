@@ -18,7 +18,7 @@
   "devDependencies": {
     "@types/common-tags": "^1.8.4",
     "@types/node": "^24.3.0",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "common-tags": "^1.8.2",
