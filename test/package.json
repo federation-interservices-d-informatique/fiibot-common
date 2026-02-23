@@ -23,7 +23,7 @@
   "dependencies": {
     "common-tags": "^1.8.2",
     "discord.js": "^14.25.1",
-    "dotenv": "^17.2.1"
+    "dotenv": "^17.3.1"
   },
   "scripts": {
     "build": "tsc"
