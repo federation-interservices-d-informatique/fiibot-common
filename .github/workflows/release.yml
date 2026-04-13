@@ -57,7 +57,7 @@ jobs:
       - name: Gen changelog
         run: bash .github/bin/changelog.sh > "${GITHUB_WORKSPACE}/changelog.txt"
       - name: Create release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           body_path: ${{ github.workspace }}/changelog.txt
           token: ${{ secrets.GITHUB_TOKEN }}
